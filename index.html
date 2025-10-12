@@ -218,13 +218,14 @@
 
         // 2. FIREBASE CONFIG: คัดลอก JSON Configuration Object ทั้งหมด
         // ** ตรวจสอบให้แน่ใจว่าบรรทัดนี้ยังอยู่ และมี JSON Object ที่สมบูรณ์ **
-        const firebaseConfig = {
-          apiKey: "AIzaSyC9GFLbMJhYNeRNwod_XPK3ngQh7b4rsAE",
-          authDomain: "loy-krathong-vercel-2025.firebaseapp.com",
-          projectId: "loy-krathong-vercel-2025",
-          storageBucket: "loy-krathong-vercel-2025.firebasestorage.app",
-          messagingSenderId: "1015035525573",
-          appId: "1:1015035525573:web:8f6dd97206e1004f5533ac"
+        const FIREBASE_CONFIG_JSON = {
+            apiKey: "AIzaSyC9GFLbMJhYNeRNwod_XPK3ngQh7b4rsAE", 
+            authDomain: "loy-krathong-vercel-2025.firebaseapp.com",
+            projectId: "loy-krathong-vercel-2025", // ต้องตรงกับค่าด้านบน
+            storageBucket: "loy-krathong-vercel-2025.firebasestorage.app",
+            messagingSenderId: "1015035525573",
+            appId: "1:1015035525573:web:8f6dd97206e1004f5533ac"
+            // กรุณาเปลี่ยนค่า ***PUT_YOUR_..._HERE*** ทั้งหมดเป็นค่าจริงที่ได้จาก Firebase Console
         };
 
         // --------------------------------------------------------------------
@@ -675,3 +676,4 @@
 
 </body>
 </html>
+
