@@ -208,15 +208,16 @@
         let userId = null;
         const KRATHONG_COLLECTION = 'krathongs';
 
-        // --- CONFIGURATION FOR VERCEL DEPLOYMENT ---
-        // **** สำคัญ: กรุณาเปลี่ยนค่าเหล่านี้เป็นค่าจริงของคุณ ****
+        // ====================================================================
+        // --- [!!! สำคัญมาก !!!] CONFIGURATION (สำหรับ VERCEL Fallback) ---
+        // **** กรุณาเปลี่ยนค่าด้านล่างนี้ให้เป็นค่าจริงของคุณจาก Firebase Console ****
 
-        // 1. PROJECT ID: ใช้สำหรับสร้าง Collection Path ใน Firestore (ควรเป็นค่าเดียวกับ __app_id)
-        // ตั้งชื่อที่สื่อความหมายสำหรับแอปของคุณ
-        const PROJECT_APP_ID = 'loy-krathong-vercel-2025'; 
+        // 1. PROJECT ID: ใช้สำหรับสร้าง Collection Path ใน Firestore (ต้องตรงกับค่า projectId ใน JSON ด้านล่าง)
+        // ** ตรวจสอบให้แน่ใจว่าบรรทัดนี้ยังอยู่ **
+        const PROJECT_APP_ID = 'loy-krathong-vercel-2025'; // <--- เปลี่ยนค่านี้
 
-        // 2. FIREBASE CONFIG: คัดลอก JSON Configuration Object จาก Firebase Console ของคุณ
-        // (Settings > Project settings > General > Your apps > Firebase SDK snippet > Config)
+        // 2. FIREBASE CONFIG: คัดลอก JSON Configuration Object ทั้งหมด
+        // ** ตรวจสอบให้แน่ใจว่าบรรทัดนี้ยังอยู่ และมี JSON Object ที่สมบูรณ์ **
         const firebaseConfig = {
           apiKey: "AIzaSyC9GFLbMJhYNeRNwod_XPK3ngQh7b4rsAE",
           authDomain: "loy-krathong-vercel-2025.firebaseapp.com",
@@ -226,12 +227,12 @@
           appId: "1:1015035525573:web:8f6dd97206e1004f5533ac"
         };
 
-        // --------------------------------------------
+        // --------------------------------------------------------------------
+        // ====================================================================
 
         const KRATHONG_PATH = (appId) => `/artifacts/${appId}/public/data/${KRATHONG_COLLECTION}`;
 
-        // --- UI Utility Functions ---
-        // UPDATED KRATHONG ICONS AND TYPES (Using SVG for a more realistic look)
+        // --- UI Utility Functions (unchanged) ---
         window.KRATHONG_ICONS = {
             'BananaLeaf': `<svg viewBox="0 0 48 48" class="w-12 h-12 mx-auto" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M40 24C40 33.9411 31.9411 42 22 42C12.0589 42 4 33.9411 4 24C4 14.0589 12.0589 6 22 6C31.9411 6 40 14.0589 40 24Z" fill="#38A169" opacity="0.8"/><path d="M40 24C40 30 35 34 24 34H20C9 34 4 30 4 24" fill="#68D391" opacity="0.6"/><rect x="22" y="16" width="4" height="12" rx="2" fill="#9F7A3E"/><path d="M24 10C24 8 26 8 26 10C26 12 24 14 24 14C24 14 22 12 22 10C22 8 24 8 24 10Z" fill="#FDE68A"/><path d="M24 10C24 9 25 9 25 10C25 11 24 12 24 12C24 12 23 11 23 10C23 9 24 9 24 10Z" fill="#F6AD55"/><rect x="27" y="24" width="2" height="6" rx="1" fill="#4A5568"/><rect x="19" y="24" width="2" height="6" rx="1" fill="#4A5568"/></svg>`, // กระทงใบตอง (Banana Leaf)
             'Lotus': `<svg viewBox="0 0 48 48" class="w-12 h-12 mx-auto" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 42C30 42 38 38 42 32C46 26 44 18 36 18C36 18 30 14 24 14C18 14 12 18 12 18C4 18 2 26 6 32C10 38 18 42 24 42Z" fill="#EC4899" opacity="0.7"/><path d="M24 14L28 26H20L24 14Z" fill="#F9A8D4"/><path d="M12 18L18 30L6 32L12 18Z" fill="#F9A8D4"/><path d="M36 18L30 30L42 32L36 18Z" fill="#F9A8D4"/><rect x="22" y="18" width="4" height="10" rx="2" fill="#FBBF24"/><path d="M24 12C24 10 26 10 26 12C26 14 24 16 24 16C24 16 22 14 22 12C22 10 24 10 24 12Z" fill="#FDE68A"/><rect x="27" y="26" width="2" height="4" rx="1" fill="#4A5568"/><rect x="19" y="26" width="2" height="4" rx="1" fill="#4A5568"/></svg>`,     // กระทงดอกบัว (Lotus)
@@ -245,7 +246,7 @@
                 // Set Firestore logging to Debug for visibility
                 setLogLevel('Debug');
 
-                // *** LOGIC FOR FIREBASE CONFIGURATION ***
+                // --- Configuration Variables Declaration ---
                 let appId;
                 let firebaseConfig;
                 const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
@@ -253,16 +254,18 @@
                 // 1. Check for Canvas Global Variables
                 if (typeof __app_id !== 'undefined' && typeof __firebase_config !== 'undefined') {
                     appId = __app_id;
-                    firebaseConfig = JSON.parse(__firebase_config);
+                    // __firebase_config is a string, so we must parse it.
+                    firebaseConfig = JSON.parse(__firebase_config); 
                     console.log("Using Canvas Global Config.");
                 } else {
-                    // 2. Fallback for Vercel/Production Environment (Uses hardcoded values)
+                    // 2. Fallback for Vercel/Production Environment (Uses hardcoded values from top of script)
                     appId = PROJECT_APP_ID;
-                    firebaseConfig = FIREBASE_CONFIG_JSON;
+                    firebaseConfig = FIREBASE_CONFIG_JSON; // <-- ใช้ตัวแปรที่ประกาศไว้ด้านบน
                     
                     // Sanity check for Vercel/Production environment
-                    if (!firebaseConfig.apiKey || firebaseConfig.apiKey === "YOUR_API_KEY") {
-                        throw new Error("Firebase configuration is missing or still using placeholder values (YOUR_API_KEY). Please update FIREBASE_CONFIG_JSON in the script.");
+                    if (!firebaseConfig.apiKey || firebaseConfig.apiKey.includes('***PUT_YOUR_API_KEY_HERE***')) {
+                        // Throw error if API Key is clearly the placeholder
+                        throw new Error("Firebase configuration is missing or still using placeholder values. Please update FIREBASE_CONFIG_JSON in the script.");
                     }
                     console.log("Using Hardcoded Production Config.");
                 }
@@ -434,7 +437,8 @@
             
             try {
                 // Determine the correct appId source
-                const currentAppId = typeof __app_id !== 'undefined' ? __app_id : PROJECT_APP_ID;
+                // Use the defined constant if Canvas globals are not present
+                const currentAppId = typeof __app_id !== 'undefined' ? __app_id : PROJECT_APP_ID; 
                 const krathongsRef = collection(db, KRATHONG_PATH(currentAppId));
                 
                 await addDoc(krathongsRef, {
@@ -626,7 +630,9 @@
                                         <circle cx="24" cy="40" r="10" fill="#9F7A3E"/>
                                         <path d="M34 35C34 37 32 37 24 37C16 37 14 37 14 35C14 33 24 25 24 25C24 25 34 33 34 35Z" fill="#A0AEC0"/>
                                         <path d="M24 20C28 20 30 24 30 26C30 28 24 30 24 30C24 30 18 28 18 26C18 24 20 20 24 20Z" fill="#38A169"/>
-                                        <rect x="22" y="12" width="4" height="10" rx="2" fill="#FFFFFF"/><path d="M24 8C24 6 26 6 26 8C26 10 24 12 24 12C24 12 22 10 22 8C22 6 24 6 24 8Z" fill="#FDE68A"/><rect x="27" y="18" width="2" height="4" rx="1" fill="#4A5568"/><rect x="19" y="18" width="2" height="4" rx="1" fill="#4A5568"/></svg>
+                                        <rect x="22" y="12" width="4" height="10" rx="2" fill="#FFFFFF"/><path d="M24 8C24 6 26 6 26 8C26 10 24 12 24 12C24 12 22 10 22 8C22 6 24 6 24 8Z" fill="#FDE68A"/>
+                                        <rect x="27" y="18" width="2" height="4" rx="1" fill="#4A5568"/><rect x="19" y="18" width="2" height="4" rx="1" fill="#4A5568"/>
+                                    </svg>
                                 </div>
                                 <span class="text-sm mt-1 block">ดั้งเดิม</span>
                             </label>
@@ -669,4 +675,3 @@
 
 </body>
 </html>
-
