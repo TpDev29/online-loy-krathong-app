@@ -207,6 +207,28 @@
         let auth;
         let userId = null;
         const KRATHONG_COLLECTION = 'krathongs';
+
+        // --- CONFIGURATION FOR VERCEL DEPLOYMENT ---
+        // **** สำคัญ: กรุณาเปลี่ยนค่าเหล่านี้เป็นค่าจริงของคุณ ****
+
+        // 1. PROJECT ID: ใช้สำหรับสร้าง Collection Path ใน Firestore (ควรเป็นค่าเดียวกับ __app_id)
+        // ตั้งชื่อที่สื่อความหมายสำหรับแอปของคุณ
+        const PROJECT_APP_ID = 'loy-krathong-vercel-2025'; 
+
+        // 2. FIREBASE CONFIG: คัดลอก JSON Configuration Object จาก Firebase Console ของคุณ
+        // (Settings > Project settings > General > Your apps > Firebase SDK snippet > Config)
+        const FIREBASE_CONFIG_JSON = {
+            apiKey: "AIzaSyC9GFLbMJhYNeRNwod_XPK3ngQh7b4rsAE", // <-- คัดลอกค่าจริงของคุณมาวางที่นี่
+            authDomain: "loy-krathong-vercel-2025.firebaseapp.com",
+            projectId: "loy-krathong-vercel-2025",
+            storageBucket: "loy-krathong-vercel-2025.firebasestorage.app",
+            messagingSenderId: "1015035525573",
+            appId: "1:1015035525573:web:8f6dd97206e1004f5533ac"
+            // หากค่าใดที่คุณไม่ต้องการใช้งาน ให้เว้นว่างไว้ก็ได้ แต่ apiKey และ projectId เป็นสิ่งจำเป็น
+        };
+
+        // --------------------------------------------
+
         const KRATHONG_PATH = (appId) => `/artifacts/${appId}/public/data/${KRATHONG_COLLECTION}`;
 
         // --- UI Utility Functions ---
@@ -224,12 +246,26 @@
                 // Set Firestore logging to Debug for visibility
                 setLogLevel('Debug');
 
-                const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-                const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+                // *** LOGIC FOR FIREBASE CONFIGURATION ***
+                let appId;
+                let firebaseConfig;
                 const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
-                if (!firebaseConfig || Object.keys(firebaseConfig).length === 0) {
-                    throw new Error("Firebase configuration is missing.");
+                // 1. Check for Canvas Global Variables
+                if (typeof __app_id !== 'undefined' && typeof __firebase_config !== 'undefined') {
+                    appId = __app_id;
+                    firebaseConfig = JSON.parse(__firebase_config);
+                    console.log("Using Canvas Global Config.");
+                } else {
+                    // 2. Fallback for Vercel/Production Environment (Uses hardcoded values)
+                    appId = PROJECT_APP_ID;
+                    firebaseConfig = FIREBASE_CONFIG_JSON;
+                    
+                    // Sanity check for Vercel/Production environment
+                    if (!firebaseConfig.apiKey || firebaseConfig.apiKey === "YOUR_API_KEY") {
+                        throw new Error("Firebase configuration is missing or still using placeholder values (YOUR_API_KEY). Please update FIREBASE_CONFIG_JSON in the script.");
+                    }
+                    console.log("Using Hardcoded Production Config.");
                 }
 
                 app = initializeApp(firebaseConfig);
@@ -245,11 +281,13 @@
                         setupRealtimeListener(appId);
                         document.getElementById('loading-status').textContent = 'พร้อมใช้งานแล้ว!';
                     } else {
-                        // Sign in using custom token or anonymously
+                        // Sign in using custom token (Canvas) or anonymously (Vercel)
                         try {
                             if (initialAuthToken) {
+                                // Canvas-specific token authentication
                                 await signInWithCustomToken(auth, initialAuthToken);
                             } else {
+                                // Standard anonymous sign-in for Vercel deployment
                                 await signInAnonymously(auth);
                             }
                         } catch (e) {
@@ -262,7 +300,7 @@
             } catch (error) {
                 console.error("Failed to initialize Firebase:", error);
                 document.getElementById('loading-status').textContent = 'เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล';
-                showFeedback('ไม่สามารถเชื่อมต่อฐานข้อมูลได้ กรุณาลองใหม่อีกครั้ง', 'error');
+                showFeedback('ไม่สามารถเชื่อมต่อฐานข้อมูลได้: ' + error.message, 'error');
             }
         };
 
@@ -396,7 +434,9 @@
             floatButton.textContent = 'กำลังลอยกระทง...';
             
             try {
-                const krathongsRef = collection(db, KRATHONG_PATH(__app_id));
+                // Determine the correct appId source
+                const currentAppId = typeof __app_id !== 'undefined' ? __app_id : PROJECT_APP_ID;
+                const krathongsRef = collection(db, KRATHONG_PATH(currentAppId));
                 
                 await addDoc(krathongsRef, {
                     name: name,
@@ -587,11 +627,7 @@
                                         <circle cx="24" cy="40" r="10" fill="#9F7A3E"/>
                                         <path d="M34 35C34 37 32 37 24 37C16 37 14 37 14 35C14 33 24 25 24 25C24 25 34 33 34 35Z" fill="#A0AEC0"/>
                                         <path d="M24 20C28 20 30 24 30 26C30 28 24 30 24 30C24 30 18 28 18 26C18 24 20 20 24 20Z" fill="#38A169"/>
-                                        <rect x="22" y="12" width="4" height="10" rx="2" fill="#FFFFFF"/>
-                                        <path d="M24 8C24 6 26 6 26 8C26 10 24 12 24 12C24 12 22 10 22 8C22 6 24 6 24 8Z" fill="#FDE68A"/>
-                                        <rect x="27" y="18" width="2" height="4" rx="1" fill="#4A5568"/>
-                                        <rect x="19" y="18" width="2" height="4" rx="1" fill="#4A5568"/>
-                                    </svg>
+                                        <rect x="22" y="12" width="4" height="10" rx="2" fill="#FFFFFF"/><path d="M24 8C24 6 26 6 26 8C26 10 24 12 24 12C24 12 22 10 22 8C22 6 24 6 24 8Z" fill="#FDE68A"/><rect x="27" y="18" width="2" height="4" rx="1" fill="#4A5568"/><rect x="19" y="18" width="2" height="4" rx="1" fill="#4A5568"/></svg>
                                 </div>
                                 <span class="text-sm mt-1 block">ดั้งเดิม</span>
                             </label>
