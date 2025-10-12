@@ -217,14 +217,13 @@
 
         // 2. FIREBASE CONFIG: คัดลอก JSON Configuration Object จาก Firebase Console ของคุณ
         // (Settings > Project settings > General > Your apps > Firebase SDK snippet > Config)
-        const FIREBASE_CONFIG_JSON = {
-            apiKey: "AIzaSyC9GFLbMJhYNeRNwod_XPK3ngQh7b4rsAE", // <-- คัดลอกค่าจริงของคุณมาวางที่นี่
-            authDomain: "loy-krathong-vercel-2025.firebaseapp.com",
-            projectId: "loy-krathong-vercel-2025",
-            storageBucket: "loy-krathong-vercel-2025.firebasestorage.app",
-            messagingSenderId: "1015035525573",
-            appId: "1:1015035525573:web:8f6dd97206e1004f5533ac"
-            // หากค่าใดที่คุณไม่ต้องการใช้งาน ให้เว้นว่างไว้ก็ได้ แต่ apiKey และ projectId เป็นสิ่งจำเป็น
+        const firebaseConfig = {
+          apiKey: "AIzaSyC9GFLbMJhYNeRNwod_XPK3ngQh7b4rsAE",
+          authDomain: "loy-krathong-vercel-2025.firebaseapp.com",
+          projectId: "loy-krathong-vercel-2025",
+          storageBucket: "loy-krathong-vercel-2025.firebasestorage.app",
+          messagingSenderId: "1015035525573",
+          appId: "1:1015035525573:web:8f6dd97206e1004f5533ac"
         };
 
         // --------------------------------------------
@@ -670,3 +669,4 @@
 
 </body>
 </html>
+
