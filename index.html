@@ -196,9 +196,9 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        // --- RTDB Imports ---
+        // --- RTDB Imports (NEW) ---
         import { getDatabase, ref, push, query, limitToLast, onValue, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
-        // ----------------------
+        // ----------------------------
         
         // Global Firebase variables
         let app;
@@ -211,7 +211,7 @@
         // ====================================================================
         // --- [!!! อัปเดตด้วยค่า Configuration ที่ถูกต้องแล้ว !!!] ---
 
-        // 1. PROJECT ID: ใช้สำหรับสร้าง Collection Path ใน RTDB
+        // 1. PROJECT ID: ใช้สำหรับสร้าง Collection Path
         const PROJECT_APP_ID = 'loy-krathong-vercel-2025';
 
         // 2. FIREBASE CONFIG: คัดลอก JSON Configuration Object ทั้งหมด
@@ -222,8 +222,8 @@
             storageBucket: "loy-krathong-vercel-2025.firebasestorage.app",
             messagingSenderId: "1015035525573",
             appId: "1:1015035525573:web:8f6dd97206e1004f5533ac",
-            // *** ต้องเพิ่ม databaseURL สำหรับ RTDB ***
-            databaseURL: "https://loy-krathong-vercel-2025-default-rtdb.asia-southeast1.firebasedatabase.app/" 
+            // *** ต้องเพิ่ม databaseURL สำหรับ RTDB และให้ตรงกับใน Console ***
+            databaseURL: "https://loy-krathong-vercel-2025-default-rtdb.asia-southeast1.firebasedatabase.app" 
         };
 
         // --------------------------------------------------------------------
@@ -315,7 +315,7 @@
             const krathongsRef = ref(rtdb, KRATHONG_PATH(appId));
             
             // 2. Create a query to order by timestamp (descending) and limit to the last 100 entries.
-            // Note: RTDB's 'limitToLast' gives the last N children added. Since we order by 'timestamp', this effectively gives the latest 100.
+            // RTDB's 'limitToLast' gives the last N children added.
             const q = query(krathongsRef, limitToLast(100));
             
             const krathongListElement = document.getElementById('krathong-list');
@@ -353,9 +353,6 @@
                     return Math.abs(hash);
                 };
 
-                // RTDB returns a DataSnapshot, which we iterate using forEach
-                // Since limitToLast is used, we need to sort them in descending order manually to match Firestore's 'desc' behavior visually,
-                // but for just displaying 100 random floats, we can just iterate.
                 const krathongDataArray = [];
                 snapshot.forEach((childSnapshot) => {
                     const data = childSnapshot.val();
@@ -363,7 +360,7 @@
                     krathongDataArray.push(data);
                 });
 
-                // RTDB returns data sorted by priority/key/index, not necessarily timestamp, so we sort by timestamp manually for consistent visual presentation.
+                // Since limitToLast is used, manually sort by timestamp (which is a millisecond number) for visual consistency
                 krathongDataArray.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
 
 
@@ -469,7 +466,8 @@
                     wish: wish,
                     krathongType: krathongType,
                     userId: userId,
-                    timestamp: serverTimestamp() // RTDB also has serverTimestamp() but it's a special object, not a function call.
+                    // Note: RTDB serverTimestamp() is an object, not a function call
+                    timestamp: serverTimestamp() 
                 });
 
                 // Success
@@ -617,8 +615,7 @@
                                         <path d="M24 42C30 42 38 38 42 32C46 26 44 18 36 18C36 18 30 14 24 14C18 14 12 18 12 18C4 18 2 26 6 32C10 38 18 42 24 42Z" fill="#EC4899" opacity="0.7"/>
                                         <path d="M24 14L28 26H20L24 14Z" fill="#F9A8D4"/>
                                         <path d="M12 18L18 30L6 32L12 18Z" fill="#F9A8D4"/>
-                                        <path d="M36 18L30 30L42 32L36 18Z" fill="#F9A8D4"/>
-                                        <rect x="22" y="18" width="4" height="10" rx="2" fill="#FBBF24"/>
+                                        <path d="M36 18L30 30L42 32L36 18Z" fill="#F9A8D4"/><rect x="22" y="18" width="4" height="10" rx="2" fill="#FBBF24"/>
                                         <path d="M24 12C24 10 26 10 26 12C26 14 24 16 24 16C24 16 22 14 22 12C22 10 24 10 24 12Z" fill="#FDE68A"/>
                                         <rect x="27" y="26" width="2" height="4" rx="1" fill="#4A5568"/>
                                         <rect x="19" y="26" width="2" height="4" rx="1" fill="#4A5568"/>
@@ -679,4 +676,3 @@
 
 </body>
 </html>
-
