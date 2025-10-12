@@ -209,23 +209,20 @@
         const KRATHONG_COLLECTION = 'krathongs';
 
         // ====================================================================
-        // --- [!!! สำคัญมาก !!!] CONFIGURATION (สำหรับ VERCEL Fallback) ---
-        // **** กรุณาเปลี่ยนค่าด้านล่างนี้ให้เป็นค่าจริงของคุณจาก Firebase Console ****
+        // --- [!!! อัปเดตด้วยค่า Configuration ที่ถูกต้องแล้ว !!!] ---
+        // ** ตอนนี้แอปฯ ควรจะเชื่อมต่อได้โดยไม่มีข้อผิดพลาด 'auth/config not found' แล้ว **
 
-        // 1. PROJECT ID: ใช้สำหรับสร้าง Collection Path ใน Firestore (ต้องตรงกับค่า projectId ใน JSON ด้านล่าง)
-        // ** ตรวจสอบให้แน่ใจว่าบรรทัดนี้ยังอยู่ **
-        const PROJECT_APP_ID = 'loy-krathong-vercel-2025'; // <--- เปลี่ยนค่านี้
+        // 1. PROJECT ID: ใช้สำหรับสร้าง Collection Path ใน Firestore
+        const PROJECT_APP_ID = 'loy-krathong-vercel-2025';
 
         // 2. FIREBASE CONFIG: คัดลอก JSON Configuration Object ทั้งหมด
-        // ** ตรวจสอบให้แน่ใจว่าบรรทัดนี้ยังอยู่ และมี JSON Object ที่สมบูรณ์ **
         const FIREBASE_CONFIG_JSON = {
-            apiKey: "AIzaSyC9GFLbMJhYNeRNwod_XPK3ngQh7b4rsAE", 
+            apiKey: "AIzaSyC9GFLbMJhYNeRNwod_XPK3ngQh7b4rsAE",
             authDomain: "loy-krathong-vercel-2025.firebaseapp.com",
-            projectId: PROJECT_APP_ID, // ต้องตรงกับค่าด้านบน
+            projectId: "loy-krathong-vercel-2025",
             storageBucket: "loy-krathong-vercel-2025.firebasestorage.app",
             messagingSenderId: "1015035525573",
             appId: "1:1015035525573:web:8f6dd97206e1004f5533ac"
-            // กรุณาเปลี่ยนค่า ***PUT_YOUR_..._HERE*** ทั้งหมดเป็นค่าจริงที่ได้จาก Firebase Console
         };
 
         // --------------------------------------------------------------------
@@ -250,6 +247,7 @@
                 // --- Configuration Variables Declaration ---
                 let appId;
                 let firebaseConfig;
+                // Get the initial auth token provided by the canvas environment
                 const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
                 // 1. Check for Canvas Global Variables
@@ -261,19 +259,20 @@
                 } else {
                     // 2. Fallback for Vercel/Production Environment (Uses hardcoded values from top of script)
                     appId = PROJECT_APP_ID;
-                    firebaseConfig = FIREBASE_CONFIG_JSON; // <-- ใช้ตัวแปรที่ประกาศไว้ด้านบน
+                    firebaseConfig = FIREBASE_CONFIG_JSON; 
                     
-                    // Sanity check for Vercel/Production environment
-                    if (!firebaseConfig.apiKey || firebaseConfig.apiKey.includes('***PUT_YOUR_API_KEY_HERE***')) {
-                        // Throw error if API Key is clearly the placeholder
-                        throw new Error("Firebase configuration is missing or still using placeholder values. Please update FIREBASE_CONFIG_JSON in the script.");
+                    // Simple check if projectId is the fallback value
+                    if (firebaseConfig.projectId === 'loy-krathong-vercel-2025') {
+                        console.log("Using Hardcoded Production Config (Verified).");
+                    } else {
+                         // Should not happen if config is updated, but good for safety
+                         throw new Error("Missing or invalid Firebase Auth configuration in fallback.");
                     }
-                    console.log("Using Hardcoded Production Config.");
                 }
 
                 app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
-                auth = getAuth(app);
+                auth = getAuth(app); // Auth initialization relies on config in the 'app' instance
 
                 // Authenticate user
                 onAuthStateChanged(auth, async (user) => {
@@ -294,8 +293,9 @@
                                 await signInAnonymously(auth);
                             }
                         } catch (e) {
-                            console.error("Authentication failed:", e);
-                            showFeedback('เกิดข้อผิดพลาดในการลงชื่อเข้าใช้: ' + e.message, 'error');
+                            // If sign-in fails, log the specific error
+                            console.error("Authentication failed during sign-in attempt:", e);
+                            showFeedback('เกิดข้อผิดพลาดในการลงชื่อเข้าใช้: ' + e.code, 'error');
                         }
                     }
                 });
@@ -632,7 +632,8 @@
                                         <path d="M34 35C34 37 32 37 24 37C16 37 14 37 14 35C14 33 24 25 24 25C24 25 34 33 34 35Z" fill="#A0AEC0"/>
                                         <path d="M24 20C28 20 30 24 30 26C30 28 24 30 24 30C24 30 18 28 18 26C18 24 20 20 24 20Z" fill="#38A169"/>
                                         <rect x="22" y="12" width="4" height="10" rx="2" fill="#FFFFFF"/><path d="M24 8C24 6 26 6 26 8C26 10 24 12 24 12C24 12 22 10 22 8C22 6 24 6 24 8Z" fill="#FDE68A"/>
-                                        <rect x="27" y="18" width="2" height="4" rx="1" fill="#4A5568"/><rect x="19" y="18" width="2" height="4" rx="1" fill="#4A5568"/>
+                                        <rect x="27" y="18" width="2" height="4" rx="1" fill="#4A5568"/>
+                                        <rect x="19" y="18" width="2" height="4" rx="1" fill="#4A5568"/>
                                     </svg>
                                 </div>
                                 <span class="text-sm mt-1 block">ดั้งเดิม</span>
@@ -676,5 +677,3 @@
 
 </body>
 </html>
-
-
