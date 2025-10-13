@@ -141,8 +141,7 @@
                     <path d="M24 42C30 42 38 38 42 32C46 26 44 18 36 18C36 18 30 14 24 14C18 14 12 18 12 18C4 18 2 26 6 32C10 38 18 42 24 42Z" fill="#EC4899" opacity="0.7"/>
                     <path d="M24 14L28 26H20L24 14Z" fill="#F9A8D4"/>
                     <path d="M12 18L18 30L6 32L12 18Z" fill="#F9A8D4"/>
-                    <path d="M36 18L30 30L42 32L36 18Z" fill="#F9A8D4"/>
-                    <rect x="22" y="18" width="4" height="10" rx="2" fill="#FBBF24"/>
+                    <path d="M36 18L30 30L42 32L36 18Z" fill="#F9A8D4"/><rect x="22" y="18" width="4" height="10" rx="2" fill="#FBBF24"/>
                     <path d="M24 12C24 10 26 10 26 12C26 14 24 16 24 16C24 16 22 14 22 12C22 10 24 10 24 12Z" fill="#FDE68A"/>
                     <rect x="27" y="26" width="2" height="4" rx="1" fill="#4A5568"/>
                     <rect x="19" y="26" width="2" height="4" rx="1" fill="#4A5568"/>
@@ -203,11 +202,22 @@
     import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, collection, query, limit, getDocs, addDoc, serverTimestamp, setLogLevel, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    // --- Config (Canvas Mandatory) ---
-    // ใช้ตัวแปรส่วนกลางของ Canvas เพื่อตั้งค่า Firebase
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-    const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-    const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+    // --- Config (Vercel Client-Side Deployment) ---
+    // ** !!! สำคัญ: ต้องแทนที่ค่า YOUR_... ทั้งหมดด้วยค่าจริงจาก Firebase Console ของคุณ !!! **
+    const FIREBASE_CONFIG_CLIENT = {
+        apiKey: "AIzaSyC9GFLbMJhYNeRNwod_XPK3ngQh7b4rsAE",
+        authDomain: "loy-krathong-vercel-2025.firebaseapp.com",
+        projectId: "loy-krathong-vercel-2025",
+        storageBucket: "loy-krathong-vercel-2025.firebasestorage.app",
+        messagingSenderId: "1015035525573",
+        appId: "1:1015035525573:web:8f6dd97206e1004f5533ac"
+        // หากมีค่าอื่นๆ ให้เพิ่มเข้ามา
+    };
+
+    // ใช้ config ที่ hardcode สำหรับการ Deploy บน Vercel
+    const firebaseConfig = FIREBASE_CONFIG_CLIENT;
+    const appId = FIREBASE_CONFIG_CLIENT.projectId; // ใช้ Project ID เป็น App ID สำหรับกำหนด Firestore Path
+    const initialAuthToken = null; // ไม่มีการใช้ Custom Token เมื่อ Deploy บน Static Host
 
     const KRATHONG_COLLECTION = 'krathongs';
     // ใช้ appId ในการสร้าง path สำหรับ public data
@@ -294,6 +304,9 @@
     // --- Fetch once (limit 50) and sort client-side ---
     let db, auth, refreshTimer = null;
     const fetchKrathongsOnce = async () => {
+      // ตรวจสอบว่า db ถูก initialize แล้ว
+      if (!db) return;
+      
       const ref = collection(db, KRATHONG_PATH());
       // Query without orderBy, fetch the latest 50 documents (limit 50)
       const q = query(ref, limit(50));
@@ -320,7 +333,8 @@
         setLastUpdated();
       } catch (e) {
         console.error('Error fetching:', e);
-        showFeedback('เกิดข้อผิดพลาดในการโหลดข้อมูล', 'error');
+        // เพิ่มการตรวจสอบ Permission Denied เพื่อช่วยในการ Debug Security Rules
+        showFeedback('เกิดข้อผิดพลาดในการโหลดข้อมูล: ' + (e.message.includes('permission') ? 'สิทธิ์ถูกปฏิเสธ (ตรวจสอบ Security Rules)' : e.message), 'error');
       }
     };
 
@@ -345,7 +359,8 @@
         fetchKrathongsOnce();
       } catch (e) {
         console.error(e);
-        showFeedback('เกิดข้อผิดพลาด: ' + e.message, 'error');
+        // แสดงข้อความ error ที่ชัดเจนขึ้น
+        showFeedback('เกิดข้อผิดพลาดในการบันทึก: ' + (e.message.includes('permission') ? 'สิทธิ์การเข้าถึงถูกปฏิเสธ (ตรวจสอบ Security Rules)' : e.message), 'error');
       } finally {
         btn.disabled = false; btn.textContent = 'ลอยกระทง';
       }
@@ -361,12 +376,22 @@
     // --- Init ---
     const init = async () => {
       try {
-        setLogLevel('Error');
+        // กำหนดระดับเป็น 'Debug' เพื่อช่วยในการตรวจสอบข้อผิดพลาด
+        setLogLevel('Debug');
+        
+        // ** FIX: ตรวจสอบความถูกต้องของ Firebase Config ก่อน Initial App **
+        if (!firebaseConfig.projectId) {
+            console.error('Init error: Firebase configuration is missing projectId. Please replace "YOUR_PROJECT_ID" in the config block.');
+            showFeedback('เชื่อมต่อฐานข้อมูลล้มเหลว: ไม่พบการตั้งค่า Firebase ที่จำเป็น (Project ID)', 'error');
+            return; 
+        }
+
         const app = initializeApp(firebaseConfig);
         db = getFirestore(app);
         auth = getAuth(app);
 
         // 1. Authenticate using custom token or anonymously
+        // เนื่องจากไม่มี initialAuthToken (เป็น null ใน Vercel static host) จึงใช้ signInAnonymously()
         if (initialAuthToken) {
             await signInWithCustomToken(auth, initialAuthToken).catch(e => {
                 console.error("Custom token sign-in failed, falling back to anonymous.", e);
@@ -392,12 +417,12 @@
           } else {
             // Should not happen after initial sign-in above, but good practice
             document.getElementById('user-id-display').textContent = 'ไม่ได้เข้าสู่ระบบ';
-            document.getElementById('loading-status').textContent = 'เชื่อมต่อล้มเหลว';
+            document.getElementById('loading-status').textContent = 'รอการเชื่อมต่อ';
           }
         });
       } catch (e) {
-        console.error('Init error:', e);
-        showFeedback('เชื่อมต่อฐานข้อมูลล้มเหลว', 'error');
+        console.error('Init error (Firebase app init failed):', e);
+        showFeedback('เชื่อมต่อฐานข้อมูลล้มเหลว: ' + e.message, 'error');
       }
     };
 
