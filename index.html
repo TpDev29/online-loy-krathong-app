@@ -24,7 +24,7 @@
   <style>
     /* Scene */
     .krathong-scene {
-      position: relative; overflow: hidden; min-height: 40rem;
+      position: relative; overflow: hidden; min-height: clamp(24rem, 60vh, 40rem);
       background: linear-gradient(to bottom,#030712 0%,#0d172e 40%,#1e3a5f 75%);
       border-radius: 0 0 1rem 1rem; z-index: 1;
     }
@@ -43,45 +43,83 @@
     }
     @keyframes waveFlow{from{background-position:0% 100%;}to{background-position:0% 0%;}}
     /* Krathong */
-    .floating-krathong-item{ position:absolute; cursor:pointer; transition:all .5s ease-out; z-index:20; font-size:3rem; line-height:1; }
+    .floating-krathong-item{ position:absolute; cursor:pointer; transition:all .5s ease-out; z-index:20; font-size: clamp(1.75rem, 4vw, 3rem); line-height:1; }
     @keyframes floatEffect{0%{transform:translateY(0) rotate(0);}50%{transform:translateY(-5px) rotate(1deg);}100%{transform:translateY(0) rotate(0);}}
+    /* Animation สำหรับกระทงล่าสุดที่ปรากฏขึ้น */
+    @keyframes appear {
+      from { opacity: 0; transform: translateX(-50%) scale(0.5); }
+      to { opacity: 1; transform: translateX(-50%) scale(1.2); }
+    }
+    .krathong-appear { animation: appear 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
     .krathong-float{ animation:floatEffect 4s ease-in-out infinite; }
     /* Bubble */
-    .speech-bubble{ position:absolute; top:-5px; left:100%; opacity:1; visibility:visible;
-      min-width:120px; max-width:180px; background-color:rgba(255,255,255,.95); color:#1e293b;
-      padding:6px 10px; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,.4); z-index:50; }
-    .speech-bubble::after{ content:''; position:absolute; top:15px; left:-8px; border-width:8px; border-style:solid;
-      border-color:transparent rgba(255,255,255,.95) transparent transparent; }
+    .speech-bubble {
+      position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+      margin-bottom: 12px; min-width: 110px; max-width: 180px; font-size: .75rem;
+      background-color: rgba(255, 255, 255, .95); color: #1e293b; text-align: center;
+      padding: 6px 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, .4); z-index: 50;
+    }
+    .speech-bubble::after {
+      content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+      border-width: 8px 8px 0 8px; border-style: solid; border-color: rgba(255, 255, 255, .95) transparent transparent transparent;
+    }
     /* Selector highlight */
     .krathong-select-button:checked + label{ border-color:#facc15; background-color:#4c515a33; box-shadow:0 0 10px rgba(250,202,21,.5); }
+
+    .krathong-logo-block { gap: 0.5rem; }
+    .krathong-header-title { letter-spacing: 0.08em; }
+    @media (max-width: 640px) {
+      .krathong-logo-block {
+        position: static !important;
+        justify-content: center;
+        padding: 0.5rem 0;
+      }
+      .krathong-logo-block + .krathong-logo-block {
+        margin-top: 0.25rem;
+      }
+      .krathong-header-title {
+        letter-spacing: 0.06em;
+      }
+      .speech-bubble {
+        max-width: 70vw;
+      }
+      /* No longer need to override bubble position on mobile */
+      .moon {
+        width: 44px;
+        height: 44px;
+        right: 10%;
+      }
+    }
+
   </style>
 </head>
-<body class="bg-water-dark min-h-screen font-sans text-white antialiased p-4">
+<body class="bg-water-dark min-h-screen font-sans text-white antialiased p-4 sm:p-6">
 
   <!-- Feedback -->
-  <div id="feedback-box" class="fixed top-5 left-1/2 -translate-x-1/2 hidden p-4 rounded-lg shadow-2xl text-white font-semibold z-[100] transition-all duration-300"></div>
+  <div id="feedback-box" class="fixed top-5 left-1/2 -translate-x-1/2 hidden p-3 sm:p-4 rounded-lg shadow-2xl text-white font-semibold z-[100] transition-all duration-300 w-[calc(100%-2rem)] max-w-md text-center text-sm sm:text-base"></div>
 
-  <div class="max-w-4xl mx-auto py-8">
-    <header class="text-center mb-8">
-      <div class="absolute top-0 left-0 flex items-center space-x-2 p-2">
-      <img src="logo01.png" alt="Logo 01" class="h-20 w-auto object-contain" />
+  <div class="max-w-4xl mx-auto py-6 sm:py-10">
+    <header class="krathong-header text-center mb-10 sm:mb-12 pt-6 sm:pt-24">
+      <div class="krathong-logo-block absolute top-0 left-0 flex items-center gap-2 sm:gap-3 p-2">
+      <img src="logo01.png" alt="Logo 01" class="krathong-logo h-14 sm:h-20 w-auto object-contain" />
       </div>
-      <div class="absolute top-0 right-0 flex items-center space-x-2 p-2">
-      <img src="logo02.png" alt="Logo 02" class="h-20 w-auto object-contain" />
-      <img src="logo03.png" alt="Logo 03" class="h-20 w-auto object-contain" />
+      <div class="krathong-logo-block absolute top-0 right-0 flex items-center gap-2 sm:gap-3 p-2">
+      <img src="logo02.png" alt="Logo 02" class="krathong-logo h-14 sm:h-20 w-auto object-contain" />
+      <img src="logo03.png" alt="Logo 03" class="krathong-logo h-14 sm:h-20 w-auto object-contain" />
       </div>
 
       <!-- Title -->
-      <h1 class="text-5xl font-extrabold text-moon-gold drop-shadow-lg tracking-wider">
+      <h1 class="krathong-header-title text-3xl sm:text-5xl font-extrabold text-moon-gold drop-shadow-lg tracking-wide sm:tracking-wider leading-snug sm:leading-tight">
       สืบสานวัฒนธรรม ลอยกระทง รักษ์โลก ๒๕๖๘ 🌕
       </h1>
-      <p class="text-xl text-gray-300 mt-2">ร่วมอธิษฐานและลอยกระทงไปกับทุกคนแบบเรียลไทม์</p>
+      <p class="text-base sm:text-xl text-gray-300 mt-3">ร่วมอธิษฐานและลอยกระทงไปกับทุกคนแบบเรียลไทม์</p>
     </header>
 
     <!-- Scene -->
     <div class="bg-water-dark p-2 rounded-2xl shadow-xl border border-water-light/50 mb-3 relative">
       <h2 class="text-3xl font-bold mb-4 text-center text-lotus-pink pt-4">ผืนน้ำแห่งคำอธิษฐาน</h2>
-      <div class="flex justify-between text-sm text-gray-400 mb-2 px-4">
+      <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between text-xs sm:text-sm text-gray-400 mb-2 px-4">
         <span>User ID: <span id="user-id-display" class="font-mono text-xs">...</span></span>
         <span id="loading-status">กำลังเชื่อมต่อฐานข้อมูล...</span>
       </div>
@@ -89,9 +127,9 @@
       <div id="krathong-list" class="krathong-scene relative w-full">
         <div id="star-container" class="star-container"></div>
         <div class="moon"></div>
-        <div class="text-center p-8 text-gray-400 absolute inset-0 flex items-center justify-center">กำลังโหลดกระทง...</div>
+        <div class="text-center p-6 sm:p-8 text-gray-400 text-sm sm:text-base absolute inset-0 flex items-center justify-center">กำลังโหลดกระทง...</div>
       </div>
-      <div class="px-4 py-2 text-right text-xs text-gray-400">
+      <div class="px-4 py-2 text-right text-[0.7rem] sm:text-xs text-gray-400">
         อัปเดตล่าสุดเมื่อ <span id="last-updated">—</span>
       </div>
     </div>
@@ -99,7 +137,7 @@
     <!-- Float button -->
     <div class="text-center mt-4">
       <button onclick="toggleFloatModal(true)"
-        class="px-8 py-4 bg-moon-gold text-water-dark font-extrabold text-lg rounded-full shadow-2xl hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 active:scale-95">
+        class="px-6 sm:px-8 py-3 sm:py-4 bg-moon-gold text-water-dark font-extrabold text-base sm:text-lg rounded-full shadow-2xl hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 active:scale-95">
         คลิกเพื่อ ลอยกระทง 🚀
       </button>
     </div>
@@ -107,26 +145,26 @@
 
   <!-- Modal -->
   <div id="float-modal" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center p-4 hidden z-50">
-    <div class="bg-water-light p-8 rounded-2xl shadow-2xl max-w-lg w-full transform transition-all duration-300 border-2 border-moon-gold/50">
-      <h3 class="text-3xl font-bold text-moon-gold mb-6 text-center">ลอยกระทงของคุณ 🌙</h3>
+    <div class="bg-water-light p-6 sm:p-8 rounded-2xl shadow-2xl max-w-lg w-full transform transition-all duration-300 border-2 border-moon-gold/50">
+      <h3 class="text-2xl sm:text-3xl font-bold text-moon-gold mb-6 text-center">ลอยกระทงของคุณ 🌙</h3>
       <form id="krathong-form" onsubmit="event.preventDefault(); floatKrathong();">
         <div class="mb-4">
-          <label for="full-name" class="block text-sm font-medium text-gray-300 mb-1">ชื่อ-นามสกุล (สำหรับแสดงผล)</label>
-          <input type="text" id="full-name" required class="w-full p-3 rounded-lg bg-water-dark border border-gray-600 focus:border-lotus-pink focus:ring-1 focus:ring-lotus-pink text-white" placeholder="เช่น: ดวงจันทร์ ลอยน้ำ">
+          <label for="full-name" class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">ชื่อ-นามสกุล (สำหรับแสดงผล)</label>
+          <input type="text" id="full-name" required class="w-full p-2.5 sm:p-3 rounded-lg bg-water-dark border border-gray-600 focus:border-lotus-pink focus:ring-1 focus:ring-lotus-pink text-white text-sm sm:text-base" placeholder="เช่น: ดวงจันทร์ ลอยน้ำ">
         </div>
         <div class="mb-4">
-          <label for="wish" class="block text-sm font-medium text-gray-300 mb-1">คำอธิษฐาน/คำอวยพร</label>
-          <textarea id="wish" rows="3" required maxlength="100" class="w-full p-3 rounded-lg bg-water-dark border border-gray-600 focus:border-lotus-pink focus:ring-1 focus:ring-lotus-pink text-white" placeholder="เช่น: ขอให้ครอบครัวมีความสุข สุขภาพแข็งแรง ตลอดปี"></textarea>
+          <label for="wish" class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">คำอธิษฐาน/คำอวยพร</label>
+          <textarea id="wish" rows="3" required maxlength="100" class="w-full p-2.5 sm:p-3 rounded-lg bg-water-dark border border-gray-600 focus:border-lotus-pink focus:ring-1 focus:ring-lotus-pink text-white text-sm sm:text-base" placeholder="เช่น: ขอให้ครอบครัวมีความสุข สุขภาพแข็งแรง ตลอดปี"></textarea>
         </div>
 
         <!-- Selector -->
         <div class="mb-6">
-          <label class="block text-sm font-medium text-gray-300 mb-2">เลือกกระทง</label>
+          <label class="block text-xs sm:text-sm font-medium text-gray-300 mb-2">เลือกกระทง</label>
           <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
             <!-- Banana Leaf -->
             <div>
               <input type="radio" id="krathong-banana-leaf" name="krathongType" value="BananaLeaf" class="hidden krathong-select-button" required>
-              <label for="krathong-banana-leaf" class="krathong-select-button block p-4 rounded-xl text-center cursor-pointer border-2 border-gray-600 transition-all duration-200">
+              <label for="krathong-banana-leaf" class="krathong-select-button block p-3 sm:p-4 rounded-xl text-center cursor-pointer border-2 border-gray-600 transition-all duration-200">
                 <div class="mx-auto w-12 h-12">
                   <svg viewBox="0 0 48 48" class="w-12 h-12 mx-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M40 24C40 33.9411 31.9411 42 22 42C12.0589 42 4 33.9411 4 24C4 14.0589 12.0589 6 22 6C31.9411 6 40 14.0589 40 24Z" fill="#38A169" opacity="0.8"/>
@@ -144,7 +182,7 @@
             <!-- Lotus -->
             <div>
               <input type="radio" id="krathong-lotus" name="krathongType" value="Lotus" class="hidden krathong-select-button">
-              <label for="krathong-lotus" class="krathong-select-button block p-4 rounded-xl text-center cursor-pointer border-2 border-gray-600 transition-all duration-200">
+              <label for="krathong-lotus" class="krathong-select-button block p-3 sm:p-4 rounded-xl text-center cursor-pointer border-2 border-gray-600 transition-all duration-200">
                 <div class="mx-auto w-12 h-12">
                   <svg viewBox="0 0 48 48" class="w-12 h-12 mx-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M24 42C30 42 38 38 42 32C46 26 44 18 36 18C36 18 30 14 24 14C18 14 12 18 12 18C4 18 2 26 6 32C10 38 18 42 24 42Z" fill="#EC4899" opacity="0.7"/>
@@ -162,7 +200,7 @@
             <!-- Classic -->
             <div>
               <input type="radio" id="krathong-classic" name="krathongType" value="Classic" class="hidden krathong-select-button" checked>
-              <label for="krathong-classic" class="krathong-select-button block p-4 rounded-xl text-center cursor-pointer border-2 border-gray-600 transition-all duration-200">
+              <label for="krathong-classic" class="krathong-select-button block p-3 sm:p-4 rounded-xl text-center cursor-pointer border-2 border-gray-600 transition-all duration-200">
                 <div class="mx-auto w-12 h-12">
                   <svg viewBox="0 0 48 48" class="w-12 h-12 mx-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="24" cy="40" r="10" fill="#9F7A3E"/>
@@ -180,7 +218,7 @@
             <!-- Coconut -->
             <div>
               <input type="radio" id="krathong-coconut" name="krathongType" value="Coconut" class="hidden krathong-select-button">
-              <label for="krathong-coconut" class="krathong-select-button block p-4 rounded-xl text-center cursor-pointer border-2 border-gray-600 transition-all duration-200">
+              <label for="krathong-coconut" class="krathong-select-button block p-3 sm:p-4 rounded-xl text-center cursor-pointer border-2 border-gray-600 transition-all duration-200">
                 <div class="mx-auto w-12 h-12">
                   <svg viewBox="0 0 48 48" class="w-12 h-12 mx-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M40 28C40 35.732 32.8366 42 24 42C15.1634 42 8 35.732 8 28H40Z" fill="#78350F"/>
@@ -198,8 +236,8 @@
         </div>
 
         <div class="flex justify-end space-x-3">
-          <button type="button" onclick="toggleFloatModal(false)" class="px-5 py-2 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors">ยกเลิก</button>
-          <button type="submit" id="float-button" class="px-5 py-2 bg-lotus-pink text-white font-semibold rounded-lg hover:bg-pink-600 transition-colors disabled:bg-gray-500">ลอยกระทง</button>
+          <button type="button" onclick="toggleFloatModal(false)" class="px-4 sm:px-5 py-2 border border-gray-600 text-gray-300 text-sm sm:text-base rounded-lg hover:bg-gray-700 transition-colors">ยกเลิก</button>
+          <button type="submit" id="float-button" class="px-4 sm:px-5 py-2 bg-lotus-pink text-white font-semibold text-sm sm:text-base rounded-lg hover:bg-pink-600 transition-colors disabled:bg-gray-500">ลอยกระทง</button>
         </div>
       </form>
     </div>
@@ -274,23 +312,47 @@
       if (moon) list.appendChild(moon);
 
       if (krathongDataArray.length === 0) {
-        list.innerHTML += '<div class="text-center p-8 text-gray-400 absolute inset-0 flex items-center justify-center z-30">ยังไม่มีกระทงลอยอยู่ในลำน้ำนี้เลย! มาเป็นคนแรกลอยกันเถอะ.</div>';
+        list.innerHTML += '<div class="text-center p-6 sm:p-8 text-gray-400 text-sm sm:text-base absolute inset-0 flex items-center justify-center z-30">ยังไม่มีกระทงลอยอยู่ในลำน้ำนี้เลย! มาเป็นคนแรกลอยกันเถอะ.</div>';
         return;
       }
 
       let html = '';
       const hashString = (s) => { let h=0; for (let i=0;i<s.length;i++) { h=((h<<5)-h)+s.charCodeAt(i); h|=0; } return Math.abs(h); };
 
-      // วนลูปข้อมูลกระทงที่จัดเรียงแล้ว
-      krathongDataArray.forEach((d) => {
+      // วนลูปข้อมูลกระทงที่จัดเรียงแล้ว (forEach มี index ให้ใช้)
+      krathongDataArray.forEach((d, index) => {
         const icon = window.KRATHONG_ICONS[d.krathongType] || window.KRATHONG_ICONS['Classic'];
-        const h = hashString(d.id || d.userId) % 10000; // ใช้ doc ID หรือ User ID ในการกำหนดตำแหน่ง
-        const x = (h % 80) + 10; // 10-90%
-        const y = (Math.floor(h/100) % 50) + 40; // 40-90%
-        const floatT = 4 + (h % 3);
+        let x, y, zIndex, scale, extraClass = '', transformStyle;
+
+        if (index === 0) {
+            // กระทงล่าสุด: จัดให้อยู่ตรงกลาง, ด้านหน้าสุด และใหญ่กว่า
+            x = 45; // ขยับไปทางซ้ายเล็กน้อย
+            y = 75;
+            zIndex = 30; // z-index สูงสุด
+            scale = 1.2; // ขนาดสุดท้ายหลังอนิเมชัน
+            extraClass = 'krathong-appear'; // เพิ่มคลาสสำหรับอนิเมชัน
+            // transform จะถูกควบคุมโดย keyframes `appear`
+            transformStyle = ''; 
+        } else {
+            // กระทงอื่นๆ: จัดวางแบบสุ่มโดยแหวกตรงกลาง
+            const h = hashString(d.id || d.userId);
+            if (h % 2 === 0) {
+              // ฝั่งซ้าย: 5% - 35% (ขยับไปทางซ้าย)
+              x = 5 + (h % 30);
+            } else {
+              // ฝั่งขวา: 55% - 85% (ขยับไปทางซ้าย)
+              x = 55 + (h % 30);
+            }
+            y = 40 + ((h >> 8) % 50); // 40-90%
+            zIndex = 20; // z-index ปกติ
+            scale = 1.0;
+            transformStyle = `transform: translateX(-50%) scale(${scale});`;
+        }
+        
+        const floatT = 4 + (hashString(d.id || d.userId) % 3);
 
         html += `
-          <div class="floating-krathong-item krathong-float" style="left:${x}%; top:${y}%; animation-duration:${floatT}s;">
+          <div class="floating-krathong-item krathong-float ${extraClass}" style="left:${x}%; top:${y}%; z-index:${zIndex}; ${transformStyle} animation-duration:${floatT}s;">
             <div class="leading-none">${icon}</div>
             <div class="speech-bubble">
               <p class="text-xs font-bold truncate">${d.name || 'ผู้ลอยนิรนาม'}</p>
@@ -298,7 +360,6 @@
             </div>
           </div>`;
       });
-
       list.insertAdjacentHTML('beforeend', html);
     };
 
