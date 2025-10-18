@@ -320,13 +320,14 @@
       const hashString = (s) => { let h=0; for (let i=0;i<s.length;i++) { h=((h<<5)-h)+s.charCodeAt(i); h|=0; } return Math.abs(h); };
 
       // วนลูปข้อมูลกระทงที่จัดเรียงแล้ว (forEach มี index ให้ใช้)
+      const isMobile = window.innerWidth <= 640;
       krathongDataArray.forEach((d, index) => {
         const icon = window.KRATHONG_ICONS[d.krathongType] || window.KRATHONG_ICONS['Classic'];
         let x, y, zIndex, scale, extraClass = '', transformStyle;
 
         if (index === 0) {
             // กระทงล่าสุด: จัดให้อยู่ตรงกลาง, ด้านหน้าสุด และใหญ่กว่า
-            x = 45; // ขยับไปทางซ้ายเล็กน้อย
+            x = isMobile ? 50 : 45; // มือถือ: กลางจอ, เดสก์ท็อป: ขยับซ้าย
             y = 75;
             zIndex = 30; // z-index สูงสุด
             scale = 1.2; // ขนาดสุดท้ายหลังอนิเมชัน
@@ -334,15 +335,28 @@
             // transform จะถูกควบคุมโดย keyframes `appear`
             transformStyle = ''; 
         } else {
-            // กระทงอื่นๆ: จัดวางแบบสุ่มโดยแหวกตรงกลาง
+            // กระทงอื่นๆ: จัดวางแบบสุ่มโดยแหวกตรงกลาง (แยกตามขนาดจอ)
             const h = hashString(d.id || d.userId);
-            if (h % 2 === 0) {
-              // ฝั่งซ้าย: 5% - 35% (ขยับไปทางซ้าย)
-              x = 5 + (h % 30);
+            if (isMobile) {
+              // --- ตรรกะสำหรับมือถือ ---
+              if (h % 2 === 0) {
+                // ฝั่งซ้าย: 5% - 40%
+                x = 5 + (h % 35);
+              } else {
+                // ฝั่งขวา: 60% - 95%
+                x = 60 + (h % 35);
+              }
             } else {
-              // ฝั่งขวา: 55% - 85% (ขยับไปทางซ้าย)
-              x = 55 + (h % 30);
+              // --- ตรรกะสำหรับเดสก์ท็อป (เหมือนเดิม) ---
+              if (h % 2 === 0) {
+                // ฝั่งซ้าย: 5% - 35%
+                x = 5 + (h % 30);
+              } else {
+                // ฝั่งขวา: 55% - 85%
+                x = 55 + (h % 30);
+              }
             }
+
             y = 40 + ((h >> 8) % 50); // 40-90%
             zIndex = 20; // z-index ปกติ
             scale = 1.0;
@@ -372,7 +386,7 @@
     };
 
     // --- Fetch once (limit 50) and sort client-side ---
-    let db, auth, refreshTimer = null;
+    let db, auth, refreshTimer = null, currentKrathongData = [];
     const fetchKrathongsOnce = async () => {
       // ตรวจสอบว่า db ถูก initialize แล้ว
       if (!db) return;
@@ -399,8 +413,9 @@
         // แก้ไข: ใช้ timestampSeconds ที่คำนวณไว้สำหรับการจัดเรียง
         krathongs.sort((a, b) => b.timestampSeconds - a.timestampSeconds);
 
-        // 3. Render the sorted array
-        renderKrathongs(krathongs);
+        // 3. เก็บข้อมูลและ Render
+        currentKrathongData = krathongs;
+        renderKrathongs(currentKrathongData);
 
         document.getElementById('loading-status').textContent = 'ข้อมูลอัปเดตล่าสุดแล้ว';
         setLastUpdated();
@@ -423,12 +438,25 @@
       btn.disabled = true; btn.textContent = 'กำลังลอยกระทง...';
 
       try {
+        // --- แสดงผลทันที (Optimistic UI Update) ---
+        // 1. สร้าง object กระทงชั่วคราว
+        const optimisticKrathong = {
+          name, wish, krathongType: type, userId: auth.currentUser.uid,
+          id: 'temp-' + Date.now(), // ID ชั่วคราวสำหรับ render
+          timestampSeconds: Date.now() / 1000
+        };
+        // 2. เพิ่มกระทงใหม่เข้าไปด้านหน้าสุดของ array ที่มีอยู่
+        currentKrathongData.unshift(optimisticKrathong);
+        // 3. Render ใหม่ทันทีเพื่อให้กระทงล่าสุดแสดงตรงกลาง
+        renderKrathongs(currentKrathongData);
+        // -----------------------------------------
+
         const ref = collection(db, KRATHONG_PATH());
         await addDoc(ref, { name, wish, krathongType: type, userId: auth.currentUser.uid, timestamp: serverTimestamp() });
         document.getElementById('krathong-form').reset();
         toggleFloatModal(false);
-        showFeedback('ลอยกระทงสำเร็จแล้ว! 🎉', 'success');
-        // refresh now
+        showFeedback('ลอยกระทงสำเร็จแล้ว! 🎉', 'success'); // ย้ายมาแสดงหลัง render
+        // โหลดข้อมูลจริงมาทับในพื้นหลัง
         fetchKrathongsOnce();
       } catch (e) {
         console.error(e);
