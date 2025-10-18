@@ -376,10 +376,13 @@
     const fetchKrathongsOnce = async () => {
       // ตรวจสอบว่า db ถูก initialize แล้ว
       if (!db) return;
+
+      // กำหนดจำนวนกระทงที่จะโหลด: 20 สำหรับมือถือ, 50 สำหรับเดสก์ท็อป
+      const krathongLimit = window.innerWidth <= 640 ? 20 : 50;
       
       const ref = collection(db, KRATHONG_PATH());
-      // Query without orderBy, fetch the latest 50 documents (limit 50)
-      const q = query(ref, limit(50));
+      // Query with dynamic limit
+      const q = query(ref, limit(krathongLimit));
       try {
         const snapshot = await getDocs(q);
 
