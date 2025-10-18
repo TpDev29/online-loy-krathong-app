@@ -44,15 +44,22 @@
     @keyframes waveFlow{from{background-position:0% 100%;}to{background-position:0% 0%;}}
     /* Krathong */
     .floating-krathong-item{ position:absolute; cursor:pointer; transition:all .5s ease-out; z-index:20; font-size: clamp(1.75rem, 4vw, 3rem); line-height:1; }
-    @keyframes floatEffect{0%{transform:translateY(0) rotate(0);}50%{transform:translateY(-5px) rotate(1deg);}100%{transform:translateY(0) rotate(0);}}
+    
+    /* --- อนิเมชันใหม่: กระทงลอยตามน้ำ --- */
+    @keyframes riverFlow {
+      0% { transform: translateY(150px) scale(0.7); opacity: 0; }
+      20% { opacity: 1; }
+      90% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-20px) scale(1.05); opacity: 0; }
+    }
+    .krathong-flow { animation: riverFlow 30s linear infinite; }
+
     /* Animation สำหรับกระทงล่าสุดที่ปรากฏขึ้น */
     @keyframes appear {
       from { opacity: 0; transform: translateX(-50%) scale(0.5); }
       to { opacity: 1; transform: translateX(-50%) scale(1.2); }
     }
     .krathong-appear { animation: appear 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-
-    .krathong-float{ animation:floatEffect 4s ease-in-out infinite; }
     /* Bubble */
     .speech-bubble {
       position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
@@ -328,12 +335,11 @@
         if (index === 0) {
             // กระทงล่าสุด: จัดให้อยู่ตรงกลาง, ด้านหน้าสุด และใหญ่กว่า
             x = isMobile ? 50 : 45; // มือถือ: กลางจอ, เดสก์ท็อป: ขยับซ้าย
-            y = 75;
+            y = 70; // ปรับตำแหน่งเริ่มต้นให้อยู่ด้านหน้า
             zIndex = 30; // z-index สูงสุด
-            scale = 1.2; // ขนาดสุดท้ายหลังอนิเมชัน
-            extraClass = 'krathong-appear'; // เพิ่มคลาสสำหรับอนิเมชัน
-            // transform จะถูกควบคุมโดย keyframes `appear`
-            transformStyle = ''; 
+            scale = 1.0;
+            extraClass = 'krathong-flow'; // เปลี่ยนมาใช้อนิเมชันลอยตามน้ำเหมือนกระทงอื่น
+            transformStyle = `transform: translateX(-50%);`; // จัดกึ่งกลาง
         } else {
             // กระทงอื่นๆ: จัดวางแบบสุ่มโดยแหวกตรงกลาง (แยกตามขนาดจอ)
             const h = hashString(d.id || d.userId);
@@ -360,13 +366,16 @@
             y = 40 + ((h >> 8) % 50); // 40-90%
             zIndex = 20; // z-index ปกติ
             scale = 1.0;
-            transformStyle = `transform: translateX(-50%) scale(${scale});`;
+            extraClass = 'krathong-flow'; // ใช้อนิเมชันลอยตามน้ำ
+            transformStyle = `transform: translateX(-50%);`; // Scale ถูกควบคุมโดย animation แล้ว
         }
         
-        const floatT = 4 + (hashString(d.id || d.userId) % 3);
+        // สุ่ม delay เพื่อให้กระทงแต่ละอันเริ่มลอยไม่พร้อมกัน
+        // สำหรับกระทงล่าสุด (index=0) ให้เริ่มทันที ไม่ต้อง delay
+        const animDelay = (index === 0) ? 0 : (hashString(d.id || d.userId) % 30000) / 1000;
 
         html += `
-          <div class="floating-krathong-item krathong-float ${extraClass}" style="left:${x}%; top:${y}%; z-index:${zIndex}; ${transformStyle} animation-duration:${floatT}s;">
+          <div class="floating-krathong-item ${extraClass}" style="left:${x}%; top:${y}%; z-index:${zIndex}; ${transformStyle} animation-delay: -${animDelay}s; --start-y: ${y}%; --start-x: ${x}%;">
             <div class="leading-none">${icon}</div>
             <div class="speech-bubble">
               <p class="text-xs font-bold truncate">${d.name || 'ผู้ลอยนิรนาม'}</p>
