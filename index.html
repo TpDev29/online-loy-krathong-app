@@ -117,7 +117,7 @@
       </div>
 
       <!-- Title -->
-      <h1 class="krathong-header-title text-3xl sm:text-5xl font-extrabold text-moon-gold drop-shadow-lg tracking-wide sm:tracking-wider leading-snug sm:leading-tight">
+      <h1 class="krathong-header-title text-3xl sm:text-5xl font-extrabold text-gray-200 drop-shadow-lg tracking-wide sm:tracking-wider leading-snug sm:leading-tight">
       สืบสานวัฒนธรรม ลอยกระทง รักษ์โลก ๒๕๖๘ 🌕
       </h1>
       <p class="text-base sm:text-xl text-gray-300 mt-3">ร่วมอธิษฐานและลอยกระทงไปกับทุกคนแบบเรียลไทม์</p>
@@ -125,9 +125,8 @@
 
     <!-- Scene -->
     <div class="bg-water-dark p-2 rounded-2xl shadow-xl border border-water-light/50 mb-3 relative">
-      <h2 class="text-3xl font-bold mb-4 text-center text-lotus-pink pt-4">ผืนน้ำแห่งคำอธิษฐาน</h2>
-      <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between text-xs sm:text-sm text-gray-400 mb-2 px-4">
-        <span>User ID: <span id="user-id-display" class="font-mono text-xs">...</span></span>
+      <h2 class="text-3xl font-bold mb-4 text-center text-gray-400 pt-4">ผืนน้ำแห่งคำอธิษฐาน</h2>
+      <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-end text-xs sm:text-sm text-gray-400 mb-2 px-4">
         <span id="loading-status">กำลังเชื่อมต่อฐานข้อมูล...</span>
       </div>
 
@@ -144,7 +143,7 @@
     <!-- Float button -->
     <div class="text-center mt-4">
       <button onclick="toggleFloatModal(true)"
-        class="px-6 sm:px-8 py-3 sm:py-4 bg-moon-gold text-water-dark font-extrabold text-base sm:text-lg rounded-full shadow-2xl hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 active:scale-95">
+        class="px-6 sm:px-8 py-3 sm:py-4 bg-gray-300 text-water-dark font-extrabold text-base sm:text-lg rounded-full shadow-2xl hover:bg-gray-400 transition-all duration-300 transform hover:scale-105 active:scale-95">
         คลิกเพื่อ ลอยกระทง 🚀
       </button>
     </div>
@@ -516,8 +515,7 @@
 
         // 2. Set up Auth State Listener
         onAuthStateChanged(auth, (u) => {
-          if (u) {
-            document.getElementById('user-id-display').textContent = u.uid;
+          if (u) {            
             document.getElementById('loading-status').textContent = 'เชื่อมต่อสำเร็จ';
             // First load and continuous polling for updates
             fetchKrathongsOnce();
@@ -526,7 +524,6 @@
             refreshTimer = setInterval(fetchKrathongsOnce, 30000);
           } else {
             // Should not happen after initial sign-in above, but good practice
-            document.getElementById('user-id-display').textContent = 'ไม่ได้เข้าสู่ระบบ';
             document.getElementById('loading-status').textContent = 'รอการเชื่อมต่อ';
           }
         });
