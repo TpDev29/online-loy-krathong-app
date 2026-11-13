@@ -120,7 +120,7 @@
       <h1 class="krathong-header-title text-3xl sm:text-5xl font-extrabold text-gray-200 drop-shadow-lg tracking-wide sm:tracking-wider leading-snug sm:leading-tight">
       สืบสานวัฒนธรรม ลอยกระทง รักษ์โลก ๒๕๖๙ 🌕
       </h1>
-      <p class="text-base sm:text-xl text-gray-300 mt-3">ร่วมอธิษฐานและลอยกระทงไปกับทุกคน อัปเดตทุกประมาณ 1 นาที</p>
+      <p class="text-base sm:text-xl text-gray-300 mt-3">ร่วมอธิษฐานและลอยกระทงไปกับทุกคน</p>
     </header>
 
     <!-- Scene -->
@@ -429,7 +429,7 @@
         const receivedIds = new Set(data.krathongs.map(item => item.id));
         ownKrathongs = ownKrathongs.filter(item => !receivedIds.has(item.id));
         renderFeed();
-        document.getElementById('loading-status').textContent = 'อัปเดตอัตโนมัติทุกประมาณ 1 นาที';
+        document.getElementById('loading-status').textContent = 'เชื่อมต่อสำเร็จ';
         const updated = new Date(data.updatedAt);
         document.getElementById('last-updated').textContent = Number.isNaN(updated.getTime())
           ? '—' : updated.toLocaleTimeString('th-TH', { hour12: false });
