@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Light the Values, Brighten the Future | ลอยกระทงออนไลน์</title>
   <meta name="theme-color" content="#101d4d" />
+  <meta name="color-scheme" content="dark light" />
   <style>
     :root { color-scheme: dark; --ink: #091b43; --panel: #102e56; --gold: #ffe09a; --muted: #aac9e5; }
     * { box-sizing: border-box; }
@@ -36,7 +37,7 @@
     .connection-status { display: inline-flex; align-items: center; gap: 8px; color: #9fb6bc; font-size: 11px; }
     .connection-status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #a8c7b4; box-shadow: 0 0 9px #a8c7b433; }
     .krathong-scene { position: relative; isolation: isolate; overflow: hidden; min-height: 620px; background: radial-gradient(ellipse at 72% 15%, #a8cfff30, transparent 28%), radial-gradient(ellipse at 20% 8%, #9463ed28, transparent 35%), linear-gradient(180deg, #101d4d 0%, #1d4580 33%, #4272a1 39%, #125b7a 40%, #104365 70%, #092944 100%); }
-    .krathong-scene::before { content: ''; position: absolute; inset: 40% 0 0; background: radial-gradient(ellipse at 71% 0%, #c5ddff20, transparent 46%), radial-gradient(ellipse at 28% 36%, #528cbd15, transparent 50%); pointer-events: none; }
+    .krathong-scene::before { content: ''; position: absolute; inset: 40% 0 0; background: radial-gradient(ellipse at 60% 0%, #c5ddff20, transparent 46%), radial-gradient(ellipse at 28% 36%, #528cbd15, transparent 50%); pointer-events: none; }
     .krathong-scene::after { content: ''; position: absolute; z-index: 0; inset: 42% -4% -5%; background: radial-gradient(ellipse at 25% 38%, #3990ae19, transparent 42%), radial-gradient(ellipse at 78% 76%, #5389b216, transparent 46%); animation: water-current 16s ease-in-out infinite alternate; pointer-events: none; }
     @keyframes water-current { to { transform: translate(2%, -1%) scale(1.04); opacity: .65; } }
     .star-container { position: absolute; inset: 0 0 61%; pointer-events: none; background: radial-gradient(ellipse at 38% 25%, #aaa0ff12, transparent 50%); }
@@ -47,8 +48,8 @@
     .star:nth-child(11n)::before { width: 13px; height: 1px; }
     .star:nth-child(11n)::after { width: 1px; height: 13px; background: linear-gradient(transparent, currentColor, transparent); }
     @keyframes twinkle { 0%, 100% { opacity: .3; transform: scale(.75); } 50% { opacity: 1; transform: scale(1.15); } }
-    .moon { position: absolute; top: 5%; left: 71.25%; transform: translateX(-50%); width: clamp(120px, 11vw, 150px); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 36% 32%, #fffef0, #ffe9b5 58%, #ebcc89 100%); box-shadow: inset -8px -6px 18px #c6a76d22, 0 0 40px #fff1bf55, 0 0 95px 25px #f6dfa326, 0 0 150px 65px #b9d9ff18; pointer-events: none; }
-    .moon::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(ellipse at 28% 37%, #bba97820 0 7%, transparent 15%), radial-gradient(ellipse at 62% 28%, #bba97816 0 9%, transparent 20%), radial-gradient(ellipse at 56% 65%, #bba9781c 0 12%, transparent 24%), radial-gradient(ellipse at 31% 72%, #fffdf059 0 6%, transparent 15%); }
+    .moon { position: absolute; top: 5%; left: 60%; transform: translateX(-50%); width: 140px; height: 140px; width: clamp(120px, 11vw, 150px); height: clamp(120px, 11vw, 150px); border-radius: 50%; box-shadow: 0 0 40px #fff1bf55, 0 0 95px 25px #f6dfa326, 0 0 150px 65px #b9d9ff18; pointer-events: none; }
+    .moon-disc { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: contain; }
     .moon::after { content: ''; position: absolute; inset: -65%; border-radius: inherit; background: radial-gradient(circle, transparent 30%, #fff0ca0b 38%, transparent 67%); }
     .festival-scenery { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
     .fireworks-layer { position: absolute; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; }
@@ -169,7 +170,7 @@
       .festival-invitation { max-width: 290px; margin: 12px auto 0; font-size: 11px; }
       .river-caption { left: 15px; bottom: 16px; font-size: 9px; }
       .candle-reflection { top: 49px; }
-      .moon { width: 96px; top: 6%; box-shadow: inset -5px -4px 14px #c6a76d22, 0 0 30px #fff1bf55, 0 0 70px 18px #f6dfa326, 0 0 110px 35px #b9d9ff18; }
+      .moon { width: 96px; height: 96px; top: 6%; box-shadow: 0 0 30px #fff1bf55, 0 0 70px 18px #f6dfa326, 0 0 110px 35px #b9d9ff18; }
       .floating-krathong-item { width: 74px; }
       .krathong-art { width: 51px; height: 48px; }
       .krathong-art svg { width: 48px; height: 48px; }
@@ -220,7 +221,7 @@
       </div>
       <div id="krathong-list" class="krathong-scene" role="group" aria-label="กระทงและคำอธิษฐานของผู้ร่วมกิจกรรม">
         <div id="star-container" class="star-container" aria-hidden="true"></div>
-        <div class="moon" aria-hidden="true"></div>
+        <div class="moon" aria-hidden="true"><img class="moon-disc" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNTAiIGhlaWdodD0iMTUwIiB2aWV3Qm94PSIwIDAgMTUwIDE1MCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJkaXNjIiBjeD0iMzYlIiBjeT0iMzIlIiByPSI4MCUiPjxzdG9wIHN0b3AtY29sb3I9IiNmZmZlZjAiLz48c3RvcCBvZmZzZXQ9Ii41OCIgc3RvcC1jb2xvcj0iI2ZmZTliNSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ViY2M4OSIvPjwvcmFkaWFsR3JhZGllbnQ+PHJhZGlhbEdyYWRpZW50IGlkPSJjcmF0ZXIiPjxzdG9wIHN0b3AtY29sb3I9IiNiYmE5NzgiIHN0b3Atb3BhY2l0eT0iLjE4Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjYmJhOTc4IiBzdG9wLW9wYWNpdHk9IjAiLz48L3JhZGlhbEdyYWRpZW50PjxjbGlwUGF0aCBpZD0iZWRnZSI+PGNpcmNsZSBjeD0iNzUiIGN5PSI3NSIgcj0iNzUiLz48L2NsaXBQYXRoPjwvZGVmcz48ZyBjbGlwLXBhdGg9InVybCgjZWRnZSkiPjxjaXJjbGUgY3g9Ijc1IiBjeT0iNzUiIHI9Ijc1IiBmaWxsPSJ1cmwoI2Rpc2MpIi8+PGVsbGlwc2UgY3g9IjQyIiBjeT0iNTUiIHJ4PSIyMiIgcnk9IjE5IiBmaWxsPSJ1cmwoI2NyYXRlcikiLz48ZWxsaXBzZSBjeD0iOTMiIGN5PSI0MiIgcng9IjI1IiByeT0iMjEiIGZpbGw9InVybCgjY3JhdGVyKSIvPjxlbGxpcHNlIGN4PSI4NCIgY3k9Ijk4IiByeD0iMzEiIHJ5PSIyNyIgZmlsbD0idXJsKCNjcmF0ZXIpIi8+PGVsbGlwc2UgY3g9IjQ3IiBjeT0iMTA4IiByeD0iMTUiIHJ5PSIxMiIgZmlsbD0iI2ZmZmRmMCIgZmlsbC1vcGFjaXR5PSIuMTIiLz48L2c+PC9zdmc+" width="150" height="150" alt="" /></div>
         <div id="festival-scenery" aria-hidden="true">
           <div id="fireworks-layer" class="fireworks-layer"></div>
           <svg class="festival-scenery" viewBox="0 0 1200 700" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -230,6 +231,7 @@
               <linearGradient id="riverbank-earth" x1="0" y1="261" x2="0" y2="302" gradientUnits="userSpaceOnUse"><stop stop-color="#314439"/><stop offset=".5" stop-color="#25362f"/><stop offset="1" stop-color="#102b35"/></linearGradient>
               <linearGradient id="open-sea" x1="0" y1="244" x2="0" y2="700" gradientUnits="userSpaceOnUse"><stop stop-color="#376689"/><stop offset=".12" stop-color="#205371"/><stop offset=".5" stop-color="#124361"/><stop offset="1" stop-color="#092944"/></linearGradient>
               <radialGradient id="sea-haze"><stop stop-color="#c3d8ed" stop-opacity=".32"/><stop offset="1" stop-color="#aacde5" stop-opacity="0"/></radialGradient>
+              <radialGradient id="temple-courtyard-light"><stop stop-color="#f1cf8e" stop-opacity=".19"/><stop offset="1" stop-color="#edc581" stop-opacity="0"/></radialGradient>
               <clipPath id="left-bank-clip"><rect width="600" height="400"/></clipPath>
               <clipPath id="right-bank-clip"><rect x="600" width="600" height="400"/></clipPath>
               <clipPath id="river-surface-clip"><path d="M398 244H802C820 258 830 267 844 269C876 284 932 300 1002 306C1063 317 1125 326 1200 343V700H0V351C51 343 119 326 191 310C251 300 303 287 354 267C370 258 385 250 398 244Z"/></clipPath>
@@ -240,7 +242,7 @@
               <radialGradient id="lantern-halo"><stop stop-color="#ffe39a" stop-opacity=".75"/><stop offset="1" stop-color="#ffbc60" stop-opacity="0"/></radialGradient>
               <mask id="reflection-mask" maskUnits="userSpaceOnUse" x="0" y="295" width="1200" height="405"><rect x="0" y="295" width="1200" height="405" fill="white" filter="url(#water-grain)"/></mask>
               <g id="festival-lantern"><circle r="24" fill="url(#lantern-halo)"/><path d="M-7-6Q0-12 7-6L6 7Q0 11-6 7Z" fill="#eec07b"/><path d="M-3-7-2 8M3-7 2 8" stroke="#bd794d" stroke-width=".8"/><path d="M-5-8H5M-4 9H4M0 10V16" stroke="#dbab6a" stroke-width="1.5"/></g>
-              <g id="market-stall"><path d="M-33 0H33V32H-33Z" fill="#362f2c"/><path d="M-40 0-24-23H24L40 0Z" fill="#8d5948"/><path d="M-40 0H40M-24-23H24" stroke="#d1a168" stroke-width="2"/><path d="M-24 5H24V20H-24Z" fill="#d79c58" opacity=".55"/><path d="M-34 0V35M34 0V35" stroke="#a28059" stroke-width="3"/><circle cy="4" r="4" fill="#ffe0a1"/></g>
+              <g id="market-stall"><ellipse cy="34" rx="38" ry="5" fill="#071c23" opacity=".6"/><g transform="translate(0 3) scale(.9)"><path d="M-33 0H33V32H-33Z" fill="#3b3831"/><path d="M-40 0-24-23H24L40 0Z" fill="#795645"/><path d="M-40 0H40M-24-23H24" stroke="#c5a374" stroke-width="1.3"/><path d="M-24 5H24V20H-24Z" fill="#e3b578" opacity=".5"/><path d="M-34 0V35M34 0V35" stroke="#937b58" stroke-width="2"/><circle cy="4" r="3" fill="#ffe0a1"/></g></g>
               <g id="festival-guest"><circle cy="-12" r="3.5" fill="#121c23"/><path d="M-4-7Q0-9 4-7L6 5H-6ZM-3 5V13M3 5V13" fill="#121c23" stroke="#121c23" stroke-width="2"/></g>
             </defs>
             <!-- The river opens between two banks toward a hazy sea horizon. -->
@@ -251,10 +253,12 @@
             <path d="M-12 254C100 239 209 251 300 246C379 242 440 240 486 245C469 250 451 258 432 267C370 287 306 300 233 310C145 326 62 343-12 353ZM714 245C768 237 818 242 870 246C976 237 1085 241 1212 252V345C1108 326 1034 317 959 306C873 300 805 284 766 269C740 258 725 250 714 245Z" fill="#142a2e"/>
             <path d="M-12 268C99 258 184 271 278 266C370 263 425 251 486 245C469 250 451 258 432 267C370 287 306 300 233 310C145 326 62 343-12 353ZM714 245C752 249 776 260 816 260C861 254 906 258 951 266C1030 270 1113 276 1212 280V345C1108 326 1034 317 959 306C873 300 805 284 766 269C740 258 725 250 714 245Z" fill="url(#riverbank-earth)"/>
             <path d="M789 270Q866 263 967 273L1001 290Q890 281 808 280Z" fill="#645a443d"/>
+            <ellipse cx="889" cy="278" rx="84" ry="10" fill="url(#temple-courtyard-light)"/>
+            <path d="M849 276Q847 282 840 285Q835 287 830 288" stroke="#b29c6c" stroke-opacity=".16" stroke-width="4" stroke-linecap="round"/>
             <ellipse cx="860" cy="274" rx="80" ry="6" fill="#071820" opacity=".65"/>
             <g fill="#13252b"><path d="M-8 280V211C-8 189 10 180 28 188C39 176 58 180 67 194C88 185 107 198 110 213C135 203 153 222 151 239Q169 245 169 277Z"/><path d="M1040 268V217Q1060 186 1083 214Q1108 174 1134 210Q1161 184 1200 209V275Z"/></g>
             <path d="M-8 279V256Q12 241 30 252Q48 238 65 251Q87 239 105 253Q130 241 146 259Q160 253 174 277Z" fill="#1b352e"/>
-            <g transform="translate(858 0)">
+            <g transform="translate(858 33.12) scale(.88)">
               <path d="M-62 261V214H62V261" fill="#5b4c3b"/><path d="M-85 219Q-49 197-32 171L0 145 32 171Q49 197 85 219L55 212H-55Z" fill="#754c3c" stroke="#c39b5d" stroke-width="2"/>
               <path d="M-65 196Q-32 171 0 128Q32 171 65 196L38 190H-38Z" fill="#9d6948" stroke="#d6b576" stroke-width="2"/>
               <path d="M0 128V104M-85 219Q-91 207-88 196M85 219Q91 207 88 196" stroke="#e0bc79" stroke-width="2"/>
@@ -262,13 +266,13 @@
               <path d="M-66 258H66V265H-66Z" fill="#87714f"/><path d="M-72 265H72V271H-72Z" fill="#66583e"/><path d="M-79 271H79V276H-79Z" fill="#514b38"/>
               <path d="M-66 259H66M-72 266H72M-79 272H79" stroke="#c5a569" stroke-opacity=".45"/>
             </g>
-            <g transform="translate(1000 0)" fill="#63543d" stroke="#bfa06b" stroke-width="1.3"><path d="M-25 266H25L20 254H-20ZM-18 252H18L11 223H-11ZM-11 222Q-9 200 0 186Q9 200 11 222ZM0 186V165"/></g>
+            <g transform="translate(1000 15.96) scale(.94)" fill="#635a45" stroke="#b6a077" stroke-width="1"><path d="M-25 266H25L20 254H-20ZM-18 252H18L11 223H-11ZM-11 222Q-9 200 0 186Q9 200 11 222ZM0 186V165"/></g>
             <g><use href="#market-stall" x="95" y="243"/><use href="#market-stall" x="189" y="247"/><use href="#market-stall" x="285" y="240"/></g>
             <!-- Lantern ropes are tied to bamboo poles planted on each bank. -->
-            <g stroke="#7c6948" stroke-width="4" stroke-linecap="round"><path d="M38 317V159M343 286V167M774 275V181M1042 318V190"/></g>
-            <g stroke="#c3a16a" stroke-width="1" opacity=".55"><path d="M36 315V161M341 284V169M772 273V183M1040 316V192"/></g>
-            <path d="M38 165Q190 215 343 173M774 187Q908 225 1042 196" stroke="#ad8c5a" stroke-width="1.5"/>
-            <g class="festival-lights">
+            <g stroke="#7c6948" stroke-width="3" stroke-linecap="round"><path d="M38 317V171M343 286V179M774 275V193M1042 318V202"/></g>
+            <g stroke="#c3a16a" stroke-width=".8" opacity=".4"><path d="M36 315V173M341 284V181M772 273V195M1040 316V204"/></g>
+            <path d="M38 177Q190 227 343 185M774 199Q908 237 1042 208" stroke="#ad8c5a" stroke-width="1"/>
+            <g class="festival-lights" transform="translate(0 12)">
               <path d="M104 183V195M190 192V204M277 188V200M824 199V211M908 208V220M988 206V218" stroke="#b99560"/>
               <use href="#festival-lantern" x="104" y="201"/><use href="#festival-lantern" x="190" y="210"/><use href="#festival-lantern" x="277" y="206"/>
               <use href="#festival-lantern" x="824" y="217"/><use href="#festival-lantern" x="908" y="226"/><use href="#festival-lantern" x="988" y="224"/>
@@ -282,7 +286,7 @@
             <g clip-path="url(#river-surface-clip)">
             <g class="bank-reflections" filter="url(#water-distortion)">
               <g mask="url(#reflection-mask)">
-                <ellipse cx="855" cy="433" rx="145" ry="170" fill="url(#moon-water-glow)"/>
+                <ellipse cx="720" cy="433" rx="145" ry="170" fill="url(#moon-water-glow)"/>
                 <g fill="url(#warm-water-glow)"><ellipse cx="79" cy="339" rx="39" ry="66"/><ellipse cx="157" cy="329" rx="28" ry="53"/><ellipse cx="234" cy="354" rx="39" ry="83"/><ellipse cx="917" cy="336" rx="53" ry="64"/><ellipse cx="1037" cy="326" rx="20" ry="44"/></g>
               </g>
               <g stroke="#ffe0a3" stroke-linecap="round" opacity=".22"><path d="M68 304q12-2 20 0m-15 11q8 2 18-1m136-8q8 2 16 0m-15 24q10-3 19 0m660-23q12 2 24-1m-31 17q15-2 29 1m-25 21q8 2 17-1"/></g>
@@ -412,10 +416,10 @@
     const createFireworks = () => {
       const layer = document.getElementById('fireworks-layer');
       if (!layer) return;
-      const radius = window.innerWidth <= 640 ? 42 : 68;
+      const radius = window.innerWidth <= 640 ? 30 : 68;
       const bursts = [
         { x: 43, y: 18, color: '#ffe3a0', delay: -1 },
-        { x: 81, y: 20, color: '#ffafd7', delay: -6.5 },
+        { x: 88, y: 25, color: '#ffafd7', delay: -6.5 },
         { x: 25, y: 14, color: '#9bdfff', delay: -12 },
       ];
       // Fixed-size CSS effects need no animation timers or extra network calls.
