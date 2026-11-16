@@ -17,7 +17,7 @@
     .hidden { display: none !important; }
     .overflow-hidden { overflow: hidden; }
     .page-shell { width: min(1120px, calc(100% - 48px)); margin: auto; }
-    .brand-bar { position: relative; min-height: 100px; a}
+    .brand-bar { position: relative; min-height: 100px; }
     .brand-logos { position: absolute; top: 12px; display: flex; align-items: center; gap: 12px; padding: 0; }
     .brand-logos-left { left: 12px; }
     .brand-logos-right { right: 12px; }
@@ -27,7 +27,7 @@
     .event-year::before, .event-year::after { content: ''; width: 27px; height: 1px; background: #edce8e66; }
     .krathong-header-title { margin: 0; font-size: clamp(32px, 4.8vw, 58px); font-weight: 600; line-height: 1.45; letter-spacing: -.035em; }
     .krathong-header-title span { color: var(--gold); }
-    .hero-description { margin: 14px auto 0; color: #b6c9ca; font-size: 14px; line-height: 1.9; }
+    .hero-description { margin: 18px auto 0; color: #edf3ed; font-size: clamp(28px, 3.6vw, 44px); font-weight: 600; line-height: 1.65; text-wrap: balance; }
     .river-card { overflow: hidden; border: 1px solid #b3d8d62b; border-radius: 24px; background: #0a202b; box-shadow: 0 24px 80px #0003; }
     .river-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 20px 26px; border-bottom: 1px solid #b3d8d612; }
     .river-heading h2 { margin: 0; font-size: 17px; font-weight: 500; }
@@ -70,6 +70,9 @@
     .krathong-scene:has(.floating-krathong-item:not(.is-latest):focus) .is-latest:not(:hover) .speech-bubble { opacity: 0; visibility: hidden; pointer-events: none; }
     .river-footer { display: flex; justify-content: space-between; gap: 10px; padding: 14px 24px; font-size: 11px; line-height: 1.7; color: #90aeb5; border-top: 1px solid #b3d8d612; }
     .last-updated-label { color: #698b94; white-space: nowrap; }
+    .river-totals { margin-left: auto; text-align: right; }
+    .krathong-total { display: block; color: #b6c9ca; font-size: 11px; }
+    #krathong-count { color: var(--gold); font-variant-numeric: tabular-nums; }
     .scene-message { position: absolute; top: 52%; left: 50%; transform: translateX(-50%); width: min(80%, 360px); margin: 0; text-align: center; color: #b6ced0; line-height: 1.9; font-size: 14px; z-index: 2; }
     .scene-message span { display: block; color: #86a8ad; font-size: 12px; margin-top: 8px; }
     .float-action { text-align: center; padding: 30px 0 42px; }
@@ -111,7 +114,7 @@
       .brand-logos img { height: 56px; max-width: 42vw; }
       .krathong-header { padding: 30px 8px 25px; }
       .event-year { font-size: 11px; margin-bottom: 10px; }
-      .hero-description { max-width: 290px; font-size: 12px; }
+      .hero-description { max-width: 100%; font-size: clamp(26px, 6vw, 34px); }
       .river-card { border-radius: 18px; }
       .river-heading { padding: 16px; gap: 8px; }
       .river-heading h2 { font-size: 14px; }
@@ -170,7 +173,10 @@
       </div>
       <div class="river-footer">
         <span>แตะกระทงเพื่ออ่านคำอธิษฐาน</span>
-        <span class="last-updated-label">อัปเดตล่าสุด <span id="last-updated">—</span></span>
+        <div class="river-totals">
+          <span class="krathong-total" role="status">ลอยไปแล้ว <span id="krathong-count">—</span> กระทง</span>
+          <span class="last-updated-label">อัปเดตล่าสุด <span id="last-updated">—</span></span>
+        </div>
       </div>
     </section>
 
@@ -340,6 +346,13 @@
     let currentKrathongData = [], ownKrathongs = [], refreshTimer = null;
     let loading = false, sending = false, failures = 0, nextRefreshAt = 0;
     let pendingSubmission = null;
+    let totalKrathongs = null;
+    const updateKrathongCount = (total) => {
+      if (!Number.isSafeInteger(total) || total < 0) return;
+      // A cached feed can be older than a successful personal submission.
+      totalKrathongs = Math.max(totalKrathongs ?? 0, total);
+      document.getElementById('krathong-count').textContent = totalKrathongs.toLocaleString('th-TH');
+    };
 
     const apiRequest = async (path, options = {}) => {
       const controller = new AbortController();
@@ -384,6 +397,7 @@
         const data = await apiRequest('/api/krathongs');
         if (!Array.isArray(data.krathongs)) throw new Error('ข้อมูลจาก API ไม่ถูกต้อง');
         currentKrathongData = data.krathongs;
+        updateKrathongCount(data.total);
         // Keep recent personal submissions visible while the shared feed is cached.
         const receivedIds = new Set(data.krathongs.map(item => item.id));
         ownKrathongs = ownKrathongs.filter(item => !receivedIds.has(item.id));
@@ -434,6 +448,7 @@
           body: JSON.stringify({ id: pendingSubmission.id, name, wish, krathongType })
         });
         if (!data.krathong?.id) throw new Error('API ไม่ได้ยืนยันการบันทึก กรุณาลองใหม่');
+        updateKrathongCount(data.total);
         ownKrathongs = [data.krathong, ...ownKrathongs.filter(item => item.id !== data.krathong.id)].slice(0, 5);
         renderFeed();
         setLastUpdated();
