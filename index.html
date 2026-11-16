@@ -4,44 +4,76 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Light the Values, Brighten the Future | ลอยกระทงออนไลน์</title>
-  <meta name="theme-color" content="#071b26" />
+  <meta name="theme-color" content="#101d4d" />
   <style>
-    :root { color-scheme: dark; --ink: #071b26; --panel: #0d2834; --gold: #edce8e; --muted: #9eb6bb; }
+    :root { color-scheme: dark; --ink: #091b43; --panel: #102e56; --gold: #ffe09a; --muted: #aac9e5; }
     * { box-sizing: border-box; }
     html { scrollbar-gutter: stable; }
-    body { margin: 0; background: radial-gradient(ellipse at 50% 0, #153a43 0, #091f2b 44%, #061720 100%); color: #edf3ed; font-family: Tahoma, 'Leelawadee UI', system-ui, sans-serif; min-height: 100vh; }
+    body { margin: 0; background: radial-gradient(ellipse at 18% 0%, #49378966, transparent 45%), radial-gradient(ellipse at 85% 25%, #126c962e, transparent 50%), linear-gradient(180deg, #142650, #0b2041 55%, #07172e); color: #f0f6ff; font-family: Tahoma, 'Leelawadee UI', system-ui, sans-serif; min-height: 100vh; }
     button, input, textarea { font: inherit; }
     button { cursor: pointer; }
     button, label, input, textarea { -webkit-tap-highlight-color: transparent; }
     button:focus-visible, input:focus-visible, textarea:focus-visible, a:focus-visible { outline: 2px solid var(--gold); outline-offset: 5px; }
     .hidden { display: none !important; }
     .overflow-hidden { overflow: hidden; }
-    .page-shell { width: min(1120px, calc(100% - 48px)); margin: auto; }
+    .page-shell { width: min(1320px, calc(100% - 48px)); margin: auto; }
     .brand-bar { position: relative; min-height: 100px; }
     .brand-logos { position: absolute; top: 12px; display: flex; align-items: center; gap: 12px; padding: 0; }
     .brand-logos-left { left: 12px; }
     .brand-logos-right { right: 12px; }
     .brand-logos img { display: block; object-fit: contain; max-width: 210px; height: 80px; width: auto; }
-    .krathong-header { text-align: center; padding: 48px 16px 32px; }
+    .krathong-header { text-align: center; padding: 30px 16px 32px; }
     .event-year { display: inline-flex; align-items: center; gap: 9px; margin-bottom: 16px; color: var(--gold); font-size: 12px; letter-spacing: .08em; }
     .event-year::before, .event-year::after { content: ''; width: 27px; height: 1px; background: #edce8e66; }
     .krathong-header-title { margin: 0; font-size: clamp(32px, 4.8vw, 58px); font-weight: 600; line-height: 1.45; letter-spacing: -.035em; }
     .krathong-header-title span { color: var(--gold); }
     .hero-description { margin: 18px auto 0; color: #edf3ed; font-size: clamp(28px, 3.6vw, 44px); font-weight: 600; line-height: 1.65; text-wrap: balance; }
-    .river-card { overflow: hidden; border: 1px solid #b3d8d62b; border-radius: 24px; background: #0a202b; box-shadow: 0 24px 80px #0003; }
+    .festival-invitation { margin: 14px 0 0; color: #bad5ef; font-size: 13px; line-height: 1.9; }
+    .river-layout { position: relative; }
+    .river-card { min-width: 0; overflow: hidden; border: 1px solid #9ecbff55; border-radius: 24px; background: #102c50; box-shadow: 0 24px 80px #020b2855, 0 0 65px #589fff12; }
     .river-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 20px 26px; border-bottom: 1px solid #b3d8d612; }
     .river-heading h2 { margin: 0; font-size: 17px; font-weight: 500; }
     .connection-status { display: inline-flex; align-items: center; gap: 8px; color: #9fb6bc; font-size: 11px; }
     .connection-status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #a8c7b4; box-shadow: 0 0 9px #a8c7b433; }
-    .krathong-scene { position: relative; isolation: isolate; overflow: hidden; min-height: 510px; background: linear-gradient(180deg, #081a2b 0%, #142d3b 34%, #21424a 39%, #123a44 40%, #0c303b 70%, #092731 100%); }
-    .krathong-scene::before { content: ''; position: absolute; left: 47%; top: 39%; width: 39%; height: 60%; background: repeating-linear-gradient(180deg, transparent 0 13px, #f1db9d13 14px 16px, transparent 18px 28px); clip-path: polygon(48% 0, 61% 0, 100% 100%, 0 100%); filter: blur(3px); pointer-events: none; }
-    .krathong-scene::after { content: ''; position: absolute; z-index: 0; inset: 39% 0 0; background: repeating-linear-gradient(176deg, transparent 0 30px, #80bdb50b 32px 33px, transparent 35px 60px); animation: water-current 18s linear infinite; pointer-events: none; }
-    @keyframes water-current { to { background-position: 30px -120px; } }
-    .star-container { position: absolute; inset: 0 0 61%; pointer-events: none; }
-    .star { position: absolute; background: #fff6df; border-radius: 50%; opacity: .5; animation: twinkle 5s ease-in-out infinite; }
-    @keyframes twinkle { 50% { opacity: .15; } }
-    .moon { position: absolute; top: 9%; left: 68%; width: 68px; height: 68px; border-radius: 50%; background: radial-gradient(circle at 36% 32%, #fff9dc, #f1d89e 72%); box-shadow: 0 0 30px #f8dfa124, 0 0 100px 30px #f8dfa10c; pointer-events: none; }
-    .moon::after { content: ''; position: absolute; inset: -17px; border-radius: inherit; border: 1px solid #efd9a40a; }
+    .krathong-scene { position: relative; isolation: isolate; overflow: hidden; min-height: 620px; background: radial-gradient(ellipse at 72% 15%, #a8cfff30, transparent 28%), radial-gradient(ellipse at 20% 8%, #9463ed28, transparent 35%), linear-gradient(180deg, #101d4d 0%, #1d4580 33%, #4272a1 39%, #125b7a 40%, #104365 70%, #092944 100%); }
+    .krathong-scene::before { content: ''; position: absolute; inset: 40% 0 0; background: radial-gradient(ellipse at 71% 0%, #c5ddff20, transparent 46%), radial-gradient(ellipse at 28% 36%, #528cbd15, transparent 50%); pointer-events: none; }
+    .krathong-scene::after { content: ''; position: absolute; z-index: 0; inset: 42% -4% -5%; background: radial-gradient(ellipse at 25% 38%, #3990ae19, transparent 42%), radial-gradient(ellipse at 78% 76%, #5389b216, transparent 46%); animation: water-current 16s ease-in-out infinite alternate; pointer-events: none; }
+    @keyframes water-current { to { transform: translate(2%, -1%) scale(1.04); opacity: .65; } }
+    .star-container { position: absolute; inset: 0 0 61%; pointer-events: none; background: radial-gradient(ellipse at 38% 25%, #aaa0ff12, transparent 50%); }
+    .star { position: absolute; background: #eff8ff; color: #c6e5ff; border-radius: 50%; opacity: .8; box-shadow: 0 0 5px currentColor; animation: twinkle 5s ease-in-out infinite; }
+    .star:nth-child(3n) { background: #fff1c9; color: #ffe3a3; }
+    .star:nth-child(11n) { color: #e6dbff; box-shadow: 0 0 8px 2px #d7c5ff66; }
+    .star:nth-child(11n)::before, .star:nth-child(11n)::after { content: ''; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: linear-gradient(90deg, transparent, currentColor, transparent); border-radius: 50%; }
+    .star:nth-child(11n)::before { width: 13px; height: 1px; }
+    .star:nth-child(11n)::after { width: 1px; height: 13px; background: linear-gradient(transparent, currentColor, transparent); }
+    @keyframes twinkle { 0%, 100% { opacity: .3; transform: scale(.75); } 50% { opacity: 1; transform: scale(1.15); } }
+    .moon { position: absolute; top: 5%; left: 71.25%; transform: translateX(-50%); width: clamp(120px, 11vw, 150px); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 36% 32%, #fffef0, #ffe9b5 58%, #ebcc89 100%); box-shadow: inset -8px -6px 18px #c6a76d22, 0 0 40px #fff1bf55, 0 0 95px 25px #f6dfa326, 0 0 150px 65px #b9d9ff18; pointer-events: none; }
+    .moon::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(ellipse at 28% 37%, #bba97820 0 7%, transparent 15%), radial-gradient(ellipse at 62% 28%, #bba97816 0 9%, transparent 20%), radial-gradient(ellipse at 56% 65%, #bba9781c 0 12%, transparent 24%), radial-gradient(ellipse at 31% 72%, #fffdf059 0 6%, transparent 15%); }
+    .moon::after { content: ''; position: absolute; inset: -65%; border-radius: inherit; background: radial-gradient(circle, transparent 30%, #fff0ca0b 38%, transparent 67%); }
+    .festival-scenery { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+    .fireworks-layer { position: absolute; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; }
+    .firework { position: absolute; left: var(--firework-x); top: var(--firework-y); color: var(--firework-color); }
+    .firework::before { content: ''; position: absolute; width: 2px; height: 18px; border-radius: 50%; background: linear-gradient(transparent, #fff4cf); box-shadow: 0 4px 10px #ffd67a66; opacity: 0; animation: firework-launch 16s linear infinite; animation-delay: var(--firework-delay); }
+    .firework-spark { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: currentColor; box-shadow: 0 0 5px currentColor, 0 0 10px currentColor; opacity: 0; animation: firework-burst 16s ease-out infinite; animation-delay: var(--firework-delay); }
+    .firework-halo { position: absolute; width: 140px; height: 140px; margin: -70px; border-radius: 50%; background: radial-gradient(circle, currentColor, transparent 67%); opacity: 0; animation: firework-halo 16s ease-out infinite; animation-delay: var(--firework-delay); }
+    .firework-water { position: absolute; left: var(--firework-x); top: 43%; width: 90px; height: 110px; margin-left: -45px; color: var(--firework-color); background: radial-gradient(ellipse at 50% 0%, currentColor, transparent 70%); filter: blur(9px); opacity: 0; animation: firework-reflection 16s ease-out infinite; animation-delay: var(--firework-delay); }
+    @keyframes firework-launch { 0% { opacity: 0; transform: translateY(150px) scaleY(1); } 2% { opacity: .8; } 7% { opacity: .9; transform: translateY(0) scaleY(.4); } 8%, 100% { opacity: 0; transform: translateY(0) scaleY(0); } }
+    @keyframes firework-burst { 0%, 7% { opacity: 0; transform: translate(0, 0) scale(.3); } 8% { opacity: 1; transform: translate(0, 0) scale(1); } 14% { opacity: .85; transform: translate(var(--spark-x), var(--spark-y)) scale(.9); } 24% { opacity: 0; transform: translate(var(--spark-drift-x), calc(var(--spark-y) + 30px)) scale(.25); } 100% { opacity: 0; } }
+    @keyframes firework-halo { 0%, 7% { opacity: 0; transform: scale(.2); } 9% { opacity: .14; } 19%, 100% { opacity: 0; transform: scale(1.2); } }
+    @keyframes firework-reflection { 0%, 7% { opacity: 0; transform: scaleX(.65); } 11% { opacity: .13; } 25%, 100% { opacity: 0; transform: scaleX(1.15); } }
+    .festival-lights { animation: festival-glow 6s ease-in-out infinite alternate; }
+    @keyframes festival-glow { from { opacity: .65; } to { opacity: 1; } }
+    .bank-reflections { transform-origin: 50% 42%; animation: reflection-shimmer 11s ease-in-out infinite alternate; }
+    @keyframes reflection-shimmer { from { opacity: .85; } to { opacity: .55; transform: translateX(3px) scaleX(1.018); } }
+    .water-ripples { transform-origin: center; animation: ripple-drift 17s ease-in-out infinite alternate; }
+    .water-ripples-secondary { animation-duration: 23s; animation-delay: -8s; }
+    @keyframes ripple-drift { to { transform: translate(9px, 3px) scaleX(1.025); opacity: .45; } }
+    .river-caption { position: absolute; left: 24px; bottom: 22px; z-index: 4; margin: 0; pointer-events: none; color: #e4d0a1; font-size: 11px; letter-spacing: .04em; text-shadow: 0 2px 8px #000; }
+    .krathong-art::before { content: ''; position: absolute; inset: -12px -18px -5px; background: radial-gradient(ellipse, #ffbc4b30, transparent 65%); pointer-events: none; animation: candle-glow 3s ease-in-out infinite alternate; }
+    @keyframes candle-glow { to { opacity: .55; transform: scale(.88); } }
+    .candle-reflection { position: absolute; top: 56px; left: 50%; width: 28px; height: 50px; transform: translateX(-50%); background: radial-gradient(ellipse at 50% 12%, #ffd27c66, transparent 62%), radial-gradient(ellipse at 40% 50%, #ffc06b22, transparent 55%); filter: blur(3px); border-radius: 45% 55% 60% 40%; animation: candle-water 5s ease-in-out infinite alternate; pointer-events: none; }
+    @keyframes candle-water { to { transform: translateX(-43%) scale(.85, 1.1); opacity: .55; } }
+    .is-latest .candle-reflection { top: 66px; }
     .floating-krathong-item { position: absolute; transform: translateX(-50%) scale(var(--depth, 1)); width: 90px; padding: 0; border: 0; background: transparent; color: #d0dddd; text-align: center; z-index: 2; animation: river-flow var(--flow-duration, 55s) linear infinite; animation-delay: var(--flow-delay, 0s); }
     .floating-krathong-item:hover, .floating-krathong-item:focus { z-index: 8; animation-play-state: paused; }
     @keyframes river-flow {
@@ -55,7 +87,7 @@
     .floating-krathong-item:focus-visible { outline-offset: 8px; border-radius: 14px; }
     .krathong-art { position: relative; display: block; width: 58px; height: 55px; margin: auto; animation: drift 5s ease-in-out infinite; animation-delay: var(--delay, 0s); }
     .krathong-art svg { width: 54px; height: 54px; display: block; margin: auto; filter: drop-shadow(0 -3px 8px #fbdc6945); }
-    .krathong-art::after { content: ''; position: absolute; width: 70px; height: 12px; left: -6px; bottom: -3px; border-radius: 50%; border: 1px solid #adc7ad28; box-shadow: 0 4px 8px #0002; }
+    .krathong-art::after { content: ''; position: absolute; width: 70px; height: 12px; left: -6px; bottom: -3px; border-radius: 50%; border-bottom: 1px solid #b5dfda38; border-top: 1px solid #b5dfda18; filter: blur(.6px); mask-image: radial-gradient(ellipse, #000 15%, transparent 70%); }
     @keyframes drift { 50% { transform: translateY(-5px) rotate(2deg); } }
     .krathong-name { display: block; margin-top: 8px; font-size: 10px; line-height: 1.5; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; opacity: .75; }
     .is-latest .krathong-art { width: 70px; height: 65px; }
@@ -75,7 +107,13 @@
     #krathong-count { color: var(--gold); font-variant-numeric: tabular-nums; }
     .scene-message { position: absolute; top: 52%; left: 50%; transform: translateX(-50%); width: min(80%, 360px); margin: 0; text-align: center; color: #b6ced0; line-height: 1.9; font-size: 14px; z-index: 2; }
     .scene-message span { display: block; color: #86a8ad; font-size: 12px; margin-top: 8px; }
-    .float-action { text-align: center; padding: 30px 0 42px; }
+    .float-action { width: 100%; text-align: center; padding: 30px 0 42px; }
+    .qr-invitation { position: fixed; top: 50%; right: 12px; transform: translateY(-50%); z-index: 10; width: clamp(140px, calc((100vw - 1320px) / 2 - 28px), 208px); display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 12px; border: 1px solid #9ecbff33; border-radius: 18px; background: #102c50e6; text-align: center; }
+    .qr-invitation a { display: block; flex-shrink: 0; border-radius: 10px; background: white; }
+    .qr-invitation a { width: 100%; }
+    .qr-invitation img { display: block; width: 100%; height: auto; border-radius: 10px; }
+    .qr-invitation strong { display: block; color: var(--gold); font-size: 13px; line-height: 1.7; }
+    .qr-invitation p { margin: 6px 0 0; color: #aac9e5; font-size: 11px; line-height: 1.8; }
     .primary-button { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 52px; padding: 0 30px; border-radius: 999px; border: 1px solid #f9e3af; background: linear-gradient(115deg, #f1dba9, #dfbb76); color: #183039; font-weight: 600; font-size: 15px; box-shadow: 0 5px 28px #e2c18019; transition: transform .2s, box-shadow .2s; }
     .primary-button:hover { transform: translateY(-2px); box-shadow: 0 8px 32px #e2c18030; }
     .primary-button svg { width: 20px; height: 20px; }
@@ -106,7 +144,15 @@
     .secondary-button { padding: 10px 20px; min-height: 44px; border: 1px solid #36505c; border-radius: 999px; background: transparent; color: #c4d4d6; font-size: 13px; }
     #float-button { min-height: 44px; padding: 10px 23px; font-size: 13px; }
     button:disabled { opacity: .55; cursor: wait; transform: none !important; }
-    @media (min-width: 1500px) { .krathong-scene { min-height: 570px; } }
+    @media (min-width: 1500px) { .krathong-scene { min-height: 700px; } }
+    @media (min-width: 1024px) and (max-width: 1655px) {
+      .qr-invitation { position: absolute; top: auto; bottom: 100%; right: calc((min(1320px, 100vw - 48px) - 100vw) / 2 + 12px); transform: none; width: 140px; padding: 8px; gap: 8px; margin-bottom: 16px; }
+      .qr-invitation p { display: none; }
+      .krathong-header { padding-left: 140px; padding-right: 140px; }
+    }
+    @media (max-width: 1023px) {
+      .qr-invitation { display: none; }
+    }
     @media (max-width: 640px) {
       .page-shell { width: calc(100% - 28px); }
       .brand-bar { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 16px 12px 0; min-height: 0; }
@@ -119,8 +165,11 @@
       .river-heading { padding: 16px; gap: 8px; }
       .river-heading h2 { font-size: 14px; }
       .connection-status { font-size: 9px; }
-      .krathong-scene { min-height: 510px; }
-      .moon { width: 53px; height: 53px; left: 67%; }
+      .krathong-scene { min-height: 560px; }
+      .festival-invitation { max-width: 290px; margin: 12px auto 0; font-size: 11px; }
+      .river-caption { left: 15px; bottom: 16px; font-size: 9px; }
+      .candle-reflection { top: 49px; }
+      .moon { width: 96px; top: 6%; box-shadow: inset -5px -4px 14px #c6a76d22, 0 0 30px #fff1bf55, 0 0 70px 18px #f6dfa326, 0 0 110px 35px #b9d9ff18; }
       .floating-krathong-item { width: 74px; }
       .krathong-art { width: 51px; height: 48px; }
       .krathong-art svg { width: 48px; height: 48px; }
@@ -138,6 +187,7 @@
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation: none !important; transition: none !important; }
+      .fireworks-layer { display: none; }
     }
   </style>
 </head>
@@ -159,16 +209,97 @@
       <div class="event-year">คืนเพ็ญเดือนสิบสอง · ๒๕๖๙</div>
       <h1 class="krathong-header-title">Light the Values,<br /><span>Brighten the Future</span></h1>
       <p class="hero-description">ยึดมั่นในคุณค่า ก้าวหน้าไปด้วยกัน</p>
+      <p class="festival-invitation">ใต้แสงจันทร์ ริมสายน้ำ<br />จุดเทียน อธิษฐาน แล้วปล่อยให้ความหวังค่อย ๆ ลอยไป</p>
     </header>
 
+    <div class="river-layout">
     <section class="river-card" aria-labelledby="river-title">
       <div class="river-heading">
-        <h2 id="river-title">ผืนน้ำแห่งคำอธิษฐาน</h2>
+        <h2 id="river-title">คืนลอยกระทง · ริมสายน้ำแห่งความหวัง</h2>
         <span id="loading-status" class="connection-status" role="status">กำลังเชื่อมต่อ...</span>
       </div>
       <div id="krathong-list" class="krathong-scene" role="group" aria-label="กระทงและคำอธิษฐานของผู้ร่วมกิจกรรม">
         <div id="star-container" class="star-container" aria-hidden="true"></div>
         <div class="moon" aria-hidden="true"></div>
+        <div id="festival-scenery" aria-hidden="true">
+          <div id="fireworks-layer" class="fireworks-layer"></div>
+          <svg class="festival-scenery" viewBox="0 0 1200 700" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="warm-water-glow"><stop stop-color="#ffd08a" stop-opacity=".48"/><stop offset=".4" stop-color="#edb46f" stop-opacity=".2"/><stop offset="1" stop-color="#edb46f" stop-opacity="0"/></radialGradient>
+              <radialGradient id="moon-water-glow"><stop stop-color="#d4e6ff" stop-opacity=".33"/><stop offset=".45" stop-color="#a7d5f7" stop-opacity=".14"/><stop offset="1" stop-color="#b5d8ff" stop-opacity="0"/></radialGradient>
+              <linearGradient id="riverbank-earth" x1="0" y1="261" x2="0" y2="302" gradientUnits="userSpaceOnUse"><stop stop-color="#314439"/><stop offset=".5" stop-color="#25362f"/><stop offset="1" stop-color="#102b35"/></linearGradient>
+              <linearGradient id="open-sea" x1="0" y1="244" x2="0" y2="700" gradientUnits="userSpaceOnUse"><stop stop-color="#376689"/><stop offset=".12" stop-color="#205371"/><stop offset=".5" stop-color="#124361"/><stop offset="1" stop-color="#092944"/></linearGradient>
+              <radialGradient id="sea-haze"><stop stop-color="#c3d8ed" stop-opacity=".32"/><stop offset="1" stop-color="#aacde5" stop-opacity="0"/></radialGradient>
+              <clipPath id="left-bank-clip"><rect width="600" height="400"/></clipPath>
+              <clipPath id="right-bank-clip"><rect x="600" width="600" height="400"/></clipPath>
+              <clipPath id="river-surface-clip"><path d="M398 244H802C820 258 830 267 844 269C876 284 932 300 1002 306C1063 317 1125 326 1200 343V700H0V351C51 343 119 326 191 310C251 300 303 287 354 267C370 258 385 250 398 244Z"/></clipPath>
+              <filter id="water-distortion" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".012 .075" numOctaves="2" seed="12" result="current"/><feDisplacementMap in="SourceGraphic" in2="current" scale="27" xChannelSelector="R" yChannelSelector="G"/><feGaussianBlur stdDeviation="1.3 .65"/></filter>
+              <filter id="water-grain" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".009 .16" numOctaves="2" seed="7"/><feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.8 -.6"/></filter>
+              <filter id="soft-water"><feGaussianBlur stdDeviation="1.2 .65"/></filter>
+              <linearGradient id="dock-wood" x1="0" y1="600" x2="0" y2="700" gradientUnits="userSpaceOnUse"><stop stop-color="#5b4233"/><stop offset="1" stop-color="#211d20"/></linearGradient>
+              <radialGradient id="lantern-halo"><stop stop-color="#ffe39a" stop-opacity=".75"/><stop offset="1" stop-color="#ffbc60" stop-opacity="0"/></radialGradient>
+              <mask id="reflection-mask" maskUnits="userSpaceOnUse" x="0" y="295" width="1200" height="405"><rect x="0" y="295" width="1200" height="405" fill="white" filter="url(#water-grain)"/></mask>
+              <g id="festival-lantern"><circle r="24" fill="url(#lantern-halo)"/><path d="M-7-6Q0-12 7-6L6 7Q0 11-6 7Z" fill="#eec07b"/><path d="M-3-7-2 8M3-7 2 8" stroke="#bd794d" stroke-width=".8"/><path d="M-5-8H5M-4 9H4M0 10V16" stroke="#dbab6a" stroke-width="1.5"/></g>
+              <g id="market-stall"><path d="M-33 0H33V32H-33Z" fill="#362f2c"/><path d="M-40 0-24-23H24L40 0Z" fill="#8d5948"/><path d="M-40 0H40M-24-23H24" stroke="#d1a168" stroke-width="2"/><path d="M-24 5H24V20H-24Z" fill="#d79c58" opacity=".55"/><path d="M-34 0V35M34 0V35" stroke="#a28059" stroke-width="3"/><circle cy="4" r="4" fill="#ffe0a1"/></g>
+              <g id="festival-guest"><circle cy="-12" r="3.5" fill="#121c23"/><path d="M-4-7Q0-9 4-7L6 5H-6ZM-3 5V13M3 5V13" fill="#121c23" stroke="#121c23" stroke-width="2"/></g>
+            </defs>
+            <!-- The river opens between two banks toward a hazy sea horizon. -->
+            <path d="M0 244H1200V700H0Z" fill="url(#open-sea)"/>
+            <ellipse cx="600" cy="244" rx="330" ry="15" fill="url(#sea-haze)"/>
+            <!-- Keep buildings, trees and their ground together as the banks shorten. -->
+            <defs><g id="festival-bank-scene">
+            <path d="M-12 254C100 239 209 251 300 246C379 242 440 240 486 245C469 250 451 258 432 267C370 287 306 300 233 310C145 326 62 343-12 353ZM714 245C768 237 818 242 870 246C976 237 1085 241 1212 252V345C1108 326 1034 317 959 306C873 300 805 284 766 269C740 258 725 250 714 245Z" fill="#142a2e"/>
+            <path d="M-12 268C99 258 184 271 278 266C370 263 425 251 486 245C469 250 451 258 432 267C370 287 306 300 233 310C145 326 62 343-12 353ZM714 245C752 249 776 260 816 260C861 254 906 258 951 266C1030 270 1113 276 1212 280V345C1108 326 1034 317 959 306C873 300 805 284 766 269C740 258 725 250 714 245Z" fill="url(#riverbank-earth)"/>
+            <path d="M789 270Q866 263 967 273L1001 290Q890 281 808 280Z" fill="#645a443d"/>
+            <ellipse cx="860" cy="274" rx="80" ry="6" fill="#071820" opacity=".65"/>
+            <g fill="#13252b"><path d="M-8 280V211C-8 189 10 180 28 188C39 176 58 180 67 194C88 185 107 198 110 213C135 203 153 222 151 239Q169 245 169 277Z"/><path d="M1040 268V217Q1060 186 1083 214Q1108 174 1134 210Q1161 184 1200 209V275Z"/></g>
+            <path d="M-8 279V256Q12 241 30 252Q48 238 65 251Q87 239 105 253Q130 241 146 259Q160 253 174 277Z" fill="#1b352e"/>
+            <g transform="translate(858 0)">
+              <path d="M-62 261V214H62V261" fill="#5b4c3b"/><path d="M-85 219Q-49 197-32 171L0 145 32 171Q49 197 85 219L55 212H-55Z" fill="#754c3c" stroke="#c39b5d" stroke-width="2"/>
+              <path d="M-65 196Q-32 171 0 128Q32 171 65 196L38 190H-38Z" fill="#9d6948" stroke="#d6b576" stroke-width="2"/>
+              <path d="M0 128V104M-85 219Q-91 207-88 196M85 219Q91 207 88 196" stroke="#e0bc79" stroke-width="2"/>
+              <path d="M-42 225H-28V251H-42ZM-7 222H7V261H-7ZM28 225H42V251H28Z" fill="#edbd71" opacity=".85"/>
+              <path d="M-66 258H66V265H-66Z" fill="#87714f"/><path d="M-72 265H72V271H-72Z" fill="#66583e"/><path d="M-79 271H79V276H-79Z" fill="#514b38"/>
+              <path d="M-66 259H66M-72 266H72M-79 272H79" stroke="#c5a569" stroke-opacity=".45"/>
+            </g>
+            <g transform="translate(1000 0)" fill="#63543d" stroke="#bfa06b" stroke-width="1.3"><path d="M-25 266H25L20 254H-20ZM-18 252H18L11 223H-11ZM-11 222Q-9 200 0 186Q9 200 11 222ZM0 186V165"/></g>
+            <g><use href="#market-stall" x="95" y="243"/><use href="#market-stall" x="189" y="247"/><use href="#market-stall" x="285" y="240"/></g>
+            <!-- Lantern ropes are tied to bamboo poles planted on each bank. -->
+            <g stroke="#7c6948" stroke-width="4" stroke-linecap="round"><path d="M38 317V159M343 286V167M774 275V181M1042 318V190"/></g>
+            <g stroke="#c3a16a" stroke-width="1" opacity=".55"><path d="M36 315V161M341 284V169M772 273V183M1040 316V192"/></g>
+            <path d="M38 165Q190 215 343 173M774 187Q908 225 1042 196" stroke="#ad8c5a" stroke-width="1.5"/>
+            <g class="festival-lights">
+              <path d="M104 183V195M190 192V204M277 188V200M824 199V211M908 208V220M988 206V218" stroke="#b99560"/>
+              <use href="#festival-lantern" x="104" y="201"/><use href="#festival-lantern" x="190" y="210"/><use href="#festival-lantern" x="277" y="206"/>
+              <use href="#festival-lantern" x="824" y="217"/><use href="#festival-lantern" x="908" y="226"/><use href="#festival-lantern" x="988" y="224"/>
+            </g>
+            <g opacity=".9"><use href="#festival-guest" x="127" y="268"/><use href="#festival-guest" x="143" y="270"/><use href="#festival-guest" x="225" y="268"/><use href="#festival-guest" x="310" y="267"/><use href="#festival-guest" x="323" y="269"/><use href="#festival-guest" x="407" y="258"/><use href="#festival-guest" x="800" y="267"/><use href="#festival-guest" x="815" y="268"/><use href="#festival-guest" x="923" y="270"/></g>
+            <g fill="#1b352e"><path d="M804 279Q815 262 828 275Q844 263 859 280Q870 268 884 283ZM954 293Q967 275 981 288Q996 274 1011 293Q1027 282 1044 299Z"/></g>
+            </g></defs>
+            <g transform="scale(.82 1)"><g clip-path="url(#left-bank-clip)"><use href="#festival-bank-scene"/></g></g>
+            <g transform="translate(216 0) scale(.82 1)"><g clip-path="url(#right-bank-clip)"><use href="#festival-bank-scene"/></g></g>
+            <!-- Uneven, softly scattered light instead of straight reflection bands. -->
+            <g clip-path="url(#river-surface-clip)">
+            <g class="bank-reflections" filter="url(#water-distortion)">
+              <g mask="url(#reflection-mask)">
+                <ellipse cx="855" cy="433" rx="145" ry="170" fill="url(#moon-water-glow)"/>
+                <g fill="url(#warm-water-glow)"><ellipse cx="79" cy="339" rx="39" ry="66"/><ellipse cx="157" cy="329" rx="28" ry="53"/><ellipse cx="234" cy="354" rx="39" ry="83"/><ellipse cx="917" cy="336" rx="53" ry="64"/><ellipse cx="1037" cy="326" rx="20" ry="44"/></g>
+              </g>
+              <g stroke="#ffe0a3" stroke-linecap="round" opacity=".22"><path d="M68 304q12-2 20 0m-15 11q8 2 18-1m136-8q8 2 16 0m-15 24q10-3 19 0m660-23q12 2 24-1m-31 17q15-2 29 1m-25 21q8 2 17-1"/></g>
+            </g>
+            <g class="water-ripples" stroke="#9ecfdf" stroke-linecap="round" fill="none" opacity=".18" filter="url(#soft-water)">
+              <path d="M32 329q16-3 34-1m92 5q23 3 39 0m242-6q21-2 36 1m97 12q29 2 50-2m345-3q25-3 44 0M90 377q27-4 53 0m182-6q19 3 43-1m170 12q36-5 61-1m382-7q29 4 62 0M19 437q31-3 62 1m125 8q42 5 82-1m167-13q43-4 71 0m217 14q47 4 85-1m236-9q31-4 66 0M156 522q51-6 95-1m108 18q32 4 68 0m147-15q47-7 91-2m230 21q40 5 89-1M334 625q69-7 118-1m141-19q52 7 113 1m215 30q59-6 98 0"/>
+            </g>
+            <g class="water-ripples water-ripples-secondary" stroke="#6ab4ce" stroke-width="1.5" stroke-linecap="round" opacity=".12" filter="url(#soft-water)"><path d="M92 351q35 4 59-1m321 9q26-4 49 0m205-5q31 3 62-1M57 402q52 5 93-1m207 11q38-4 75 0m341-7q41 5 78 0M86 477q53-5 95 0m197-7q48 6 101 0m144 14q58-4 101 0m316-10q51 5 98-1M276 582q59 7 117 0m135-12q58-5 105 1m203 11q59 6 103-1M386 672q63-5 121 1m239-7q56 4 112-1"/></g>
+            </g>
+            <!-- A small wooden landing gives the viewer a place at the water. -->
+            <path d="M0 622 119 604 291 700H0Z" fill="url(#dock-wood)" stroke="#967049" stroke-width="1"/>
+            <path d="M0 641 151 622M0 666 190 644M0 693 236 670M48 616 145 700M94 609 239 700" stroke="#b58c573d" stroke-width="2"/>
+            <path d="M20 626V584M105 614V572" stroke="#563f2f" stroke-width="7"/>
+            <g fill="#132e2b" stroke="#27433a" stroke-width="1"><path d="M1200 700Q1121 622 1136 555Q1175 585 1200 700ZM1200 700Q1089 665 1059 604Q1121 613 1200 700ZM1200 700Q1163 576 1200 528Z"/><path d="M-12 710V660Q4 642 21 653Q37 635 52 649Q72 646 79 663Q97 661 109 681L115 710Z"/><path d="M0 700Q70 652 75 593Q27 619 0 700Z"/></g>
+          </svg>
+          <p class="river-caption">แสงเทียนเล็ก ๆ กับความหวังที่ลอยไปด้วยกัน</p>
+        </div>
         <p class="scene-message text-center">กำลังเตรียมผืนน้ำแห่งคำอธิษฐาน...</p>
       </div>
       <div class="river-footer">
@@ -179,13 +310,23 @@
         </div>
       </div>
     </section>
+      <aside class="qr-invitation" aria-label="สแกน QR Code เพื่อร่วมลอยกระทง">
+        <a href="https://online-loy-krathong-app.vercel.app/" aria-label="เปิดเว็บลอยกระทงออนไลน์">
+          <img src="data:image/png;base64,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61zn1DnqbOtQWkbj69ImlfrozCml9q51rnPqHHW2NeFpFAAkvWW06oGUp2MAv1P9NFpSvKihABba/1Lf9g87KanUR2dOKbV3rXOdU+eos63JgHejwUJW9RyaSn105pRSm2ud65w6R51tHUpTTN96cqrl0wPQY9Ln97yjBFCIFNPTUokgH2XOymr4VtJ3FibOWRk3dW08jO9G7/HhiUwlgnx8WRTfpjIrxcQ5K+Omro3nxcrogW8SU4kgn1RuZ7/MT+eclXFT10YET6MAIEmW0W0eSPk3euBk4afRDQoQNRQ4XP4v9aPLkPLN8C//43pvp1RuZ7/MT+eclXFT10ZExbvRoZX0wrRTiSCfVG5nv8xP55yVcVPXxvN+xGfwT+X/MP1laN0H4ND1+T3lCcA4fPAEABLKKABIKKMAIKGMAoCEMgoAEsooAEgoowAgoYwCgIQyCgASyigASCijACChjAKAhDIKABLKKABIKKMAIKGMAoCEMgoAEsooAEgoowAgoYwCgIQyCgASyigASCijACChjAKAhDIKABLKKABIKKMAIKGMAoCEMgoAEsooAEgoowAgoYwCgIQyCgASyigASCijACChjAKAhDIKABLKKABIKKMAIPk/AAAA//+TYJYiAAAABklEQVQDAGlAChf56jNqAAAAAElFTkSuQmCC" width="450" height="450" alt="QR Code สำหรับเปิดเว็บไซต์ลอยกระทงออนไลน์" />
+        </a>
+        <div><strong>สแกนเพื่อลอยกระทง</strong><p>เปิดกล้องมือถือ<br />แล้วสแกน QR Code นี้<br />มาร่วมฝากคำอธิษฐานด้วยกัน</p></div>
+      </aside>
+    </div>
 
     <div class="float-action">
+      <div class="float-invitation">
       <button type="button" class="primary-button" onclick="toggleFloatModal(true)" aria-haspopup="dialog">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3c-2 2-2 4 0 5 2-1 2-3 0-5Z" fill="currentColor"/><path d="M12 9v5M5 13l7 4 7-4M3 16c1 4 5 5 9 5s8-1 9-5M7 10l5 4 5-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         ลอยกระทงของคุณ
       </button>
       <p class="action-note">หนึ่งกระทง หนึ่งแสงแห่งคุณค่า สู่อนาคตที่สดใสไปด้วยกัน</p>
+      </div>
+
     </div>
     <footer class="page-footer">Light the Values, Brighten the Future · ยึดมั่นในคุณค่า ก้าวหน้าไปด้วยกัน · ๒๕๖๙</footer>
   </main>
@@ -256,15 +397,39 @@
 
     const createStars = () => {
       const container = document.getElementById('star-container'); if (!container) return;
-      const n = 65;
+      container.innerHTML = '';
+      const n = window.innerWidth <= 640 ? 85 : 140;
       for (let i=0;i<n;i++){
         const s = document.createElement('div'); s.className = 'star';
-        const size = Math.random()*1 + 1;
+        const size = i % 11 === 0 ? 3 : Math.random()*1.5 + .8;
         s.style.width = size+'px'; s.style.height = size+'px';
-        s.style.top = (Math.random()*100)+'%'; s.style.left = (Math.random()*100)+'%';
-        s.style.animationDelay = (Math.random()*5)+'s'; s.style.animationDuration = (Math.random()*3+1.5)+'s';
+        s.style.top = (3 + Math.random()*83)+'%'; s.style.left = (2 + Math.random()*96)+'%';
+        s.style.animationDelay = (-Math.random()*7)+'s'; s.style.animationDuration = (Math.random()*4+3)+'s';
         container.appendChild(s);
       }
+    };
+
+    const createFireworks = () => {
+      const layer = document.getElementById('fireworks-layer');
+      if (!layer) return;
+      const radius = window.innerWidth <= 640 ? 42 : 68;
+      const bursts = [
+        { x: 43, y: 18, color: '#ffe3a0', delay: -1 },
+        { x: 81, y: 20, color: '#ffafd7', delay: -6.5 },
+        { x: 25, y: 14, color: '#9bdfff', delay: -12 },
+      ];
+      // Fixed-size CSS effects need no animation timers or extra network calls.
+      layer.innerHTML = bursts.map(({ x, y, color, delay }) => {
+        const style = `--firework-x:${x}%; --firework-y:${y}%; --firework-color:${color}; --firework-delay:${delay}s;`;
+        const sparks = Array.from({ length: 36 }, (_, i) => {
+          const angle = (i / 24) * Math.PI * 2;
+          const distance = radius * (i < 24 ? .82 + (i % 3) * .09 : .42);
+          const dx = Math.cos(angle) * distance;
+          const dy = Math.sin(angle) * distance;
+          return `<span class="firework-spark" style="--spark-x:${dx.toFixed(1)}px; --spark-y:${dy.toFixed(1)}px; --spark-drift-x:${(dx * 1.12).toFixed(1)}px;"></span>`;
+        }).join('');
+        return `<div class="firework" style="${style}"><span class="firework-halo"></span>${sparks}</div><div class="firework-water" style="${style}"></div>`;
+      }).join('');
     };
 
     // User-supplied text must not be interpreted as HTML.
@@ -277,9 +442,11 @@
       const list = document.getElementById('krathong-list');
       const moon = document.querySelector('.moon');
       const stars = document.getElementById('star-container');
+      const scenery = document.getElementById('festival-scenery');
       list.innerHTML = '';
       if (stars) list.appendChild(stars);
       if (moon) list.appendChild(moon);
+      if (scenery) list.appendChild(scenery);
       if (!krathongDataArray.length) {
         riverMotions.clear();
         list.insertAdjacentHTML('beforeend', '<p class="scene-message text-center">คำอธิษฐานแรกของค่ำคืนนี้ อาจเป็นของคุณ<span>เลือกกระทง แล้วร่วมสร้างความทรงจำไปด้วยกัน</span></p>');
@@ -310,12 +477,13 @@
         // Preserve progress when the feed refreshes instead of restarting boats.
         const delay = duration * motion.phase + (now - motion.startedAt) / 1000;
         const progress = (delay / duration) % 1;
-        const endX = 36 + (hash(seed + ':end-x') % 2800) / 100;
-        const endY = 46 + (hash(seed + ':end-y') % 700) / 100;
+        // Converge through the gap between the banks and disappear offshore.
+        const endX = 47 + (hash(seed + ':end-x') % 600) / 100;
+        const endY = 35.5 + (hash(seed + ':end-y') % 200) / 100;
         const midX = motion.startX + (endX - motion.startX) * .32 + (seed % 11) - 5;
         const bendX = motion.startX + (endX - motion.startX) * .68 + (hash(seed + ':bend') % 9) - 4;
         const nearScale = 1.04 + (seed % 13) / 100;
-        const farScale = .48 + (hash(seed + ':scale') % 13) / 100;
+        const farScale = .16 + (hash(seed + ':scale') % 9) / 100;
         const x = motion.startX + (endX - motion.startX) * progress;
         const y = 104 + (endY - 104) * progress;
         const depth = nearScale + (farScale - nearScale) * progress;
@@ -326,6 +494,7 @@
           <button type="button" class="floating-krathong-item ${index === 0 ? 'is-latest' : ''}"
             style="left:${x}%; top:${y}%; --depth:${depth}; --river-start-x:${motion.startX}%; --river-mid-x:${midX}%; --river-bend-x:${bendX}%; --river-end-x:${endX}%; --river-end-y:${endY}%; --near-scale:${nearScale}; --mid-scale:${nearScale * .86}; --distant-scale:${nearScale * .67}; --far-scale:${farScale}; --flow-duration:${duration}s; --flow-delay:-${delay}s; --delay:-${seed % 5}s;" aria-label="กระทงของ ${name}: ${wish}">
             <span class="krathong-art" aria-hidden="true">${icon}</span>
+            <span class="candle-reflection" aria-hidden="true"></span>
             <span class="krathong-name" aria-hidden="true">${name}</span>
             <span class="speech-bubble" aria-hidden="true"><strong>${name}</strong><span class="wish-text">${wish}</span></span>
           </button>`;
@@ -508,6 +677,7 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       createStars();
+      createFireworks();
       init();
     });
   </script>
