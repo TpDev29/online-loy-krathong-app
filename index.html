@@ -347,6 +347,11 @@
           <input type="text" id="full-name" required maxlength="100" class="w-full p-2.5 sm:p-3 rounded-lg bg-water-dark border border-gray-600 focus:border-lotus-pink focus:ring-1 focus:ring-lotus-pink text-white text-sm sm:text-base" placeholder="เช่น: ดวงจันทร์ ลอยน้ำ">
         </div>
         <div class="mb-4">
+          <label for="employee-number" class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">Employee Number (ไม่บังคับ)</label>
+          <input type="text" id="employee-number" maxlength="32" autocomplete="off" aria-describedby="employee-number-help" class="w-full p-2.5 sm:p-3 rounded-lg bg-water-dark border border-gray-600 focus:border-lotus-pink focus:ring-1 focus:ring-lotus-pink text-white text-sm sm:text-base">
+          <p id="employee-number-help" class="mt-1 text-xs text-gray-300">กรอกหมายเลขพนักงานเพื่อลุ้นรับกระทง หมายเลขนี้จะไม่แสดงบนหน้ากระทง</p>
+        </div>
+        <div class="mb-4">
           <label for="wish" class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">คำอธิษฐาน/คำอวยพร</label>
           <textarea id="wish" rows="3" required maxlength="100" class="w-full p-2.5 sm:p-3 rounded-lg bg-water-dark border border-gray-600 focus:border-lotus-pink focus:ring-1 focus:ring-lotus-pink text-white text-sm sm:text-base" placeholder="เช่น: ขอให้ครอบครัวมีความสุข สุขภาพแข็งแรง ตลอดปี"></textarea>
         </div>
@@ -599,12 +604,14 @@
       const form = document.getElementById('krathong-form');
       if (!form.reportValidity()) return;
       const name = document.getElementById('full-name').value.trim();
+      const employeeNumber = document.getElementById('employee-number').value.trim() || undefined;
       const wish = document.getElementById('wish').value.trim();
       const krathongType = document.querySelector('input[name="krathongType"]:checked')?.value;
       if (!name || !wish || !krathongType) {
         return showFeedback('กรุณากรอกข้อมูลให้ครบถ้วนและเลือกกระทง', 'warning');
       }
-      const signature = JSON.stringify({ name, wish, krathongType });
+      const item = { name, wish, krathongType, employeeNumber };
+      const signature = JSON.stringify(item);
       // Retain the ID if the connection failed after the server saved the data.
       if (!pendingSubmission || pendingSubmission.signature !== signature) {
         pendingSubmission = { signature, id: crypto.randomUUID() };
@@ -618,7 +625,7 @@
           method: 'POST',
           // A simple CORS request avoids a preflight for every submission.
           headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
-          body: JSON.stringify({ id: pendingSubmission.id, name, wish, krathongType })
+          body: JSON.stringify({ id: pendingSubmission.id, ...item })
         });
         if (!data.krathong?.id) throw new Error('API ไม่ได้ยืนยันการบันทึก กรุณาลองใหม่');
         updateKrathongCount(data.total);
