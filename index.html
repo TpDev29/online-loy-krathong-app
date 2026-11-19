@@ -105,7 +105,8 @@
     .last-updated-label { color: #698b94; white-space: nowrap; }
     .river-totals { margin-left: auto; text-align: right; }
     .krathong-total { display: block; color: #b6c9ca; font-size: 11px; }
-    #krathong-count { color: var(--gold); font-variant-numeric: tabular-nums; }
+    .krathong-count { color: var(--gold); font-variant-numeric: tabular-nums; }
+    .site-totals { display: flex; justify-content: flex-end; gap: 12px; color: #b6c9ca; }
     .scene-message { position: absolute; top: 52%; left: 50%; transform: translateX(-50%); width: min(80%, 360px); margin: 0; text-align: center; color: #b6ced0; line-height: 1.9; font-size: 14px; z-index: 2; }
     .scene-message span { display: block; color: #86a8ad; font-size: 12px; margin-top: 8px; }
     .float-action { width: 100%; text-align: center; padding: 30px 0 42px; }
@@ -130,17 +131,21 @@
     .modal-description { margin: 0 0 25px; color: var(--muted); font-size: 12px; line-height: 1.8; }
     .modal-close { position: absolute; right: 20px; top: 22px; display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid #fff2; border-radius: 50%; background: transparent; color: #c1d0d2; font-size: 23px; }
     #krathong-form > div { margin-bottom: 20px; }
-    #krathong-form label:not([for^="krathong-"]) { display: block; margin-bottom: 8px; font-size: 12px; color: #c6d7d9; }
+    #krathong-form > div > label { display: block; margin-bottom: 8px; font-size: 12px; color: #c6d7d9; }
     #krathong-form input[type="text"], #krathong-form textarea { display: block; width: 100%; padding: 12px 14px; background: #091f2a; color: #f1f6f3; border: 1px solid #36505c; border-radius: 10px; font-size: 13px; line-height: 1.8; }
     #krathong-form textarea { min-height: 104px; resize: vertical; }
     #krathong-form input::placeholder, #krathong-form textarea::placeholder { color: #72909b; opacity: 1; }
     #krathong-form .grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 9px; }
-    #krathong-form input[type="radio"] { position: absolute; width: 1px; height: 1px; opacity: 0; }
+    #krathong-form .site-field { min-width: 0; margin: 0 0 20px; padding: 0; border: 0; color: #c6d7d9; font-size: 12px; }
+    #krathong-form .site-field legend { margin-bottom: 4px; }
+    #krathong-form .site-field label { display: inline-flex; align-items: center; gap: 8px; padding: 5px 16px 5px 0; cursor: pointer; }
+    #krathong-form .site-field input { width: 16px; height: 16px; margin: 0; accent-color: var(--gold); }
+    #krathong-form input[name="krathongType"] { position: absolute; width: 1px; height: 1px; opacity: 0; }
     #krathong-form label[for^="krathong-"] { display: block; padding: 13px 4px 10px; border: 1px solid #36505c; border-radius: 12px; background: #0c2430; text-align: center; cursor: pointer; transition: border-color .2s, background .2s; }
     #krathong-form label[for^="krathong-"] svg { width: 64px; height: 64px; max-width: 100%; display: block; margin: 0 auto 7px; }
     #krathong-form label[for^="krathong-"] span { display: block; font-size: 10px; color: #bcd0d3; }
-    #krathong-form input[type="radio"]:checked + label { border-color: #e3c78f; background: #e3c78f13; box-shadow: inset 0 0 0 1px #e3c78f33; }
-    #krathong-form input[type="radio"]:focus-visible + label { outline: 2px solid var(--gold); outline-offset: 3px; }
+    #krathong-form input[name="krathongType"]:checked + label { border-color: #e3c78f; background: #e3c78f13; box-shadow: inset 0 0 0 1px #e3c78f33; }
+    #krathong-form input[name="krathongType"]:focus-visible + label { outline: 2px solid var(--gold); outline-offset: 3px; }
     #krathong-form .form-actions { display: flex; justify-content: flex-end; gap: 10px; padding-top: 4px; margin-bottom: 0; }
     .secondary-button { padding: 10px 20px; min-height: 44px; border: 1px solid #36505c; border-radius: 999px; background: transparent; color: #c4d4d6; font-size: 13px; }
     #float-button { min-height: 44px; padding: 10px 23px; font-size: 13px; }
@@ -308,7 +313,13 @@
       <div class="river-footer">
         <span>แตะกระทงเพื่ออ่านคำอธิษฐาน</span>
         <div class="river-totals">
-          <span class="krathong-total" role="status">ลอยไปแล้ว <span id="krathong-count">—</span> กระทง</span>
+          <div role="status">
+            <span class="krathong-total">ลอยไปแล้ว <span id="krathong-count" class="krathong-count">—</span> กระทง</span>
+            <span class="site-totals">
+              <span>HDD <span id="hdd-count" class="krathong-count">—</span></span>
+              <span>THO <span id="tho-count" class="krathong-count">—</span></span>
+            </span>
+          </div>
           <span class="last-updated-label">อัปเดตล่าสุด <span id="last-updated">—</span></span>
         </div>
       </div>
@@ -350,6 +361,11 @@
           <input type="text" id="employee-number" maxlength="32" autocomplete="off" aria-describedby="employee-number-help" class="w-full p-2.5 sm:p-3 rounded-lg bg-water-dark border border-gray-600 focus:border-lotus-pink focus:ring-1 focus:ring-lotus-pink text-white text-sm sm:text-base">
           <p id="employee-number-help" class="mt-1 text-xs text-gray-300">กรอกหมายเลขพนักงานเพื่อลุ้นรับกระทง หมายเลขนี้จะไม่แสดงบนหน้ากระทง</p>
         </div>
+        <fieldset class="site-field">
+          <legend>Site (ต้องเลือก)</legend>
+          <label><input type="radio" name="site" value="HDD" required> HDD</label>
+          <label><input type="radio" name="site" value="THO" required> THO</label>
+        </fieldset>
         <div class="mb-4">
           <label for="wish" class="block text-xs sm:text-sm font-medium text-gray-300 mb-1">คำอธิษฐาน/คำอวยพร</label>
           <textarea id="wish" rows="3" required maxlength="100" class="w-full p-2.5 sm:p-3 rounded-lg bg-water-dark border border-gray-600 focus:border-lotus-pink focus:ring-1 focus:ring-lotus-pink text-white text-sm sm:text-base" placeholder="เช่น: ขอให้ครอบครัวมีความสุข สุขภาพแข็งแรง ตลอดปี"></textarea>
@@ -523,12 +539,19 @@
     let currentKrathongData = [], ownKrathongs = [], refreshTimer = null;
     let loading = false, sending = false, failures = 0, nextRefreshAt = 0;
     let pendingSubmission = null;
-    let totalKrathongs = null;
-    const updateKrathongCount = (total) => {
-      if (!Number.isSafeInteger(total) || total < 0) return;
+    let totalKrathongs = 0;
+    const updateKrathongCounts = ({ total, siteCounts }) => {
       // A cached feed can be older than a successful personal submission.
-      totalKrathongs = Math.max(totalKrathongs ?? 0, total);
-      document.getElementById('krathong-count').textContent = totalKrathongs.toLocaleString('th-TH');
+      if (!Number.isSafeInteger(total) || total < totalKrathongs) return;
+      totalKrathongs = total;
+      const counts = { 'krathong-count': total, 'hdd-count': siteCounts?.HDD, 'tho-count': siteCounts?.THO };
+      for (const [id, count] of Object.entries(counts)) {
+        if (Number.isSafeInteger(count) && count >= 0) {
+          const node = document.getElementById(id);
+          const formatted = count.toLocaleString('th-TH');
+          if (node.textContent !== formatted) node.textContent = formatted;
+        }
+      }
     };
 
     const apiRequest = async (path, options = {}) => {
@@ -574,7 +597,7 @@
         const data = await apiRequest('/api/krathongs');
         if (!Array.isArray(data.krathongs)) throw new Error('ข้อมูลจาก API ไม่ถูกต้อง');
         currentKrathongData = data.krathongs;
-        updateKrathongCount(data.total);
+        updateKrathongCounts(data);
         // Keep recent personal submissions visible while the shared feed is cached.
         const receivedIds = new Set(data.krathongs.map(item => item.id));
         ownKrathongs = ownKrathongs.filter(item => !receivedIds.has(item.id));
@@ -604,12 +627,16 @@
       if (!form.reportValidity()) return;
       const name = document.getElementById('full-name').value.trim();
       const employeeNumber = document.getElementById('employee-number').value.trim() || undefined;
+      const site = document.querySelector('input[name="site"]:checked')?.value;
+      if (site !== 'HDD' && site !== 'THO') {
+        return showFeedback('กรุณาเลือก Site เป็น HDD หรือ THO', 'warning');
+      }
       const wish = document.getElementById('wish').value.trim();
       const krathongType = document.querySelector('input[name="krathongType"]:checked')?.value;
       if (!name || !wish || !krathongType) {
         return showFeedback('กรุณากรอกข้อมูลให้ครบถ้วนและเลือกกระทง', 'warning');
       }
-      const item = { name, wish, krathongType, employeeNumber };
+      const item = { name, wish, krathongType, employeeNumber, site };
       const signature = JSON.stringify(item);
       // Retain the ID if the connection failed after the server saved the data.
       if (!pendingSubmission || pendingSubmission.signature !== signature) {
@@ -627,7 +654,7 @@
           body: JSON.stringify({ id: pendingSubmission.id, ...item })
         });
         if (!data.krathong?.id) throw new Error('API ไม่ได้ยืนยันการบันทึก กรุณาลองใหม่');
-        updateKrathongCount(data.total);
+        updateKrathongCounts(data);
         ownKrathongs = [data.krathong, ...ownKrathongs.filter(item => item.id !== data.krathong.id)].slice(0, 5);
         renderFeed();
         setLastUpdated();
